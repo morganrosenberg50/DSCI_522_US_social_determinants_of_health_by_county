@@ -1,6 +1,6 @@
-# Contributing to the Top Twitch Streamer Project
+# Contributing to the project
 
-This outlines how to propose a change to the Top Twitch Streamer Project. 
+This outlines how to propose a change to the project. 
 
 ### Fixing typos
 
