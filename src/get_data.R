@@ -13,14 +13,13 @@ library(docopt)
 library(tidyverse)
 opt <- docopt(doc)
 
-main <- function(arg) {
+main <- function(opt) {
   if (is.null(opt$url)) {
     df <- read_csv(opt$path)
   }
   else {
     df <- read_csv(opt$url)
   }
-  
   write.csv(df, "data/rawdata.csv", row.names = FALSE)
 }
 
