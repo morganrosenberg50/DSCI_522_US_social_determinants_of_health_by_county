@@ -5,12 +5,12 @@
 Usage: get_data.R ((--url=<url> --file=<file>) | --path=<path>) [--save=save]
 
 Options:
---url=<url>       Takes a URL (either this or the path is a
+--url=<url>       URL from where to download data (either this or the path is a
                   required option)
---file=<file>     Takes a filename (file must be specified
-                  if using URL)
---path=<path>     Takes a local path as a string
---save=save       Takes a local path to save the output file to as a string  
+--file=<file>     Filaname of Kaggle dataset to download (file must be
+                  specified if using URL)
+--path=<path>     Local path from where to read data
+--save=save       Path including filename of where to locally write the file  
                   [default: data/rawdata.csv]
 " -> doc
 
