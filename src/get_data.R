@@ -14,6 +14,12 @@ library(tidyverse)
 opt <- docopt(doc)
 
 main <- function(opt) {
+  rcall <- httr::GET(opt$url)
+  
+  if (rcall[[2]] != 200){
+    stop("Invalid URL")
+  }
+  
   df <- read_csv(opt$url)
   write.csv(df, opt$out_file, row.names = FALSE)
 }
