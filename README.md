@@ -29,6 +29,7 @@ The results of EDA can be found here.
       - tidyverse=1.3.1
       - httr=1.4.2
       - jsonlite=1.7.2
+      - testthat=3.0.4
 
 ## License
 
