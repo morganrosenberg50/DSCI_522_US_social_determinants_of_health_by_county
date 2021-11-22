@@ -22,14 +22,23 @@ county (e.g. smokers percentage, population, income ratio, etc.).
 
 The results of EDA can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/EDA/EDA.pdf). Please download the HTML file to view the interactive plots.
 
+## Usage
+
+To replicate the analysis, clone this GitHub repository, install the
+dependencies listed below, and run the following
+commands at the command line/terminal from the root directory of this
+project:
+
+
+    Rscript src/get_kaggle_data.R --url=https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data --file=US_counties_COVID19_health_weather_data.csv --out_file=data/US_counties_COVID19_health_weather_data.csv
+    Rscript -e "rmarkdown::render('src/EDA/EDA_for_pdf.Rmd')"
+
 ## **Dependencies**
 -   R version 4.1.1 and R packages:
     -   docopt=0.7.1
     -   tidyverse=1.3.1
     -   httr=1.4.2
     -   jsonlite=1.7.2
-
-# **References**
 
 # **Proposal**
 
@@ -46,17 +55,17 @@ CC0 Public Domain
 How are certain features associated with the prevalence of COVID-19
 cases?
 
-#### 1. Which features (columns) should be included in this analysis (there are \<200 columns right now)? \[Inference\]
+#### 1. Which features (columns) should be included in this analysis (there are \<200 columns right now)? \[Exploratory\]
 
-Proposed: we will begin by selecting features by intuition, and then
-iteratively remove statistically insignificant / practically non-useful
+Proposed: We will begin by selecting features by intuition, and then
+iteratively remove statistically insignificant or practically non-useful
 features, while adding new features we become curious about.
 
-#### 2. What is an appropriate model to assess the relationship between features and COVID-19 cases? \[Inference\]
+#### 2. What is an appropriate model to assess the relationship between features and COVID-19 cases? \[Exploratory\]
 
-Proposed: a linear regression model will be the most effective to
+Proposed: A linear regression model will be the most effective to
 identify statistically significant relationships between features and
-COVID-19 cases.
+COVID-19 cases since the model has easily interpretable coefficients.
 
 ### Analysis Tools:
 
@@ -67,9 +76,9 @@ COVID-19 cases.
 -   Linear regression with number of cases as the response variable and
     the features as the explanatory variables
 
-### Potential EDA and Communicating Results:
+### DA and Communicating Results:
 
-Table: list of COVID-19 prevalence per county (total cases, per capita,
+Table: List of COVID-19 prevalence per county (total cases, per capita,
 growth rate). This will inform our baseline understanding of the most
 affected counties, which could then give us contextual understanding to
 further our EDA, and interpretation of our analysis. We will experiment
@@ -77,7 +86,7 @@ by arranging this data in different orders (e.g. group by county, sort
 in descending order of each column) and display the most informative
 version(s) of the chart.
 
-Figure: successive scatterplots comparing total cases/ capita / county
+Figure: Successive scatterplots comparing total cases/ capita / county
 with mean incidence / county of each of our potential features This will
 inform general observable trends between the features and the incidence
 of COVID-19, and give an early indication if our question and summary
