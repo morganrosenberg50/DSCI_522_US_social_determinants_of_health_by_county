@@ -20,7 +20,7 @@ county (e.g. smokers percentage, population, income ratio, etc.).
 
 ## **EDA**
 
-The results of EDA can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/src/EDA/EDA.pdf). Please download the [HTML file](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/src/EDA/EDA.html) to view the interactive plots.
+The results of EDA can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/src/EDA/EDA_for_pdf.pdf). Please download the [HTML file](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/src/EDA/EDA_for_html.html) to view the interactive plots.
 
 ## Usage
 
