@@ -1,0 +1,216 @@
+---
+title: "Exploratory Data Analysis"
+author: "Group 25 - US social determinants of health by county"
+date: "11/20/2021"
+output:
+  html_document:
+    toc: yes
+    toc_depth: '4'
+---
+
+## Setup
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r load libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(plotly)
+library(broom)
+
+```
+
+Our GitHub Repo: 
+**https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county**
+
+
+## Load Data
+
+```{r load datasets for this assignment, message=FALSE}
+covid_data <- read.csv("US_counties_COVID19_health_weather_data.csv")
+```
+
+## Select features
+
+```{r select features for analysis}
+interesting_features <- c(
+  "date", "county", "cases", "state", 
+  "total_population", "num_deaths", "percent_smokers", 
+  "percent_vaccinated", "income_ratio", 
+  "population_density_per_sqmi", "percent_fair_or_poor_health",
+  "percent_unemployed_CHR", "violent_crime_rate", 
+  "chlamydia_rate", "teen_birth_rate"
+)
+
+covid_data <- covid_data %>% 
+  select(all_of(interesting_features)) %>%
+  mutate(date = as.Date(date)) # change date from character to "Date" class
+
+
+# check the descriptive stats of the data frame 
+summary(covid_data)
+```
+
+## Exploratory Data Analysis (EDA)
+
+### Table of COVID-19 prevalence for every state
+
+```{r}
+library(lemon)
+knit_print.data.frame <- lemon_print
+```
+
+```{r table of covid prevalence for each state, message=FALSE, render=lemon_print}
+covid_prevalence_table_state <- covid_data %>%
+
+# The following lines are for calculating daily growth rate
+  group_by(state, date) %>%
+  summarize(cases = sum(cases),
+  population = mean(total_population, na.rm=TRUE)) %>%
+  mutate(cases_growth_rate = (cases - lag(cases) / lag(cases))) %>%
+
+  # The following lines are for group_by values for each state
+  group_by(state) %>%
+  summarize(total_cases = max(cases),
+  total_cases_per_capita = total_cases / mean(population, na.rm=TRUE),
+  mean_cases_growth_rate = mean(cases_growth_rate, na.rm=TRUE)) %>%
+  arrange(desc(total_cases))
+
+head(data.frame(covid_prevalence_table_state))
+tail(data.frame(covid_prevalence_table_state))
+
+```
+There are `NA`s in the table because of the missing values for that county/state in the original dataset.
+
+### Table of COVID-19 prevalence for every county
+
+```{r table of covid prevalence for each county, message=FALSE, render=lemon_print}
+covid_prevalence_table_county <- covid_data %>%
+# The following lines are for calculating daily growth rate
+  group_by(county, date) %>%
+  summarize(cases = sum(cases),
+  population = mean(total_population, na.rm=TRUE)) %>%
+  mutate(cases_growth_rate = (cases - lag(cases) / lag(cases))) %>%
+
+# The following lines are for group_by values for each state
+  group_by(county) %>%
+  summarize(total_cases = max(cases),
+  total_cases_per_capita = total_cases / mean(population, na.rm=TRUE),
+  mean_cases_growth_rate = mean(cases_growth_rate, na.rm=TRUE)) %>%
+  arrange(desc(total_cases)) 
+
+head(data.frame(covid_prevalence_table_county))
+tail(data.frame(covid_prevalence_table_county))
+
+```
+
+### Visualization 1 - distributions of numeric features
+
+```{r create a dataframe for visualization}
+covid_data_group_by_sate <- covid_data %>%
+  group_by(state) %>%
+  summarize(
+            num_deaths = max(num_deaths), 
+            percent_smokers = mean(percent_smokers, na.rm=TRUE), 
+            percent_vaccinated = max(percent_vaccinated), 
+            income_ratio = mean(income_ratio, na.rm=TRUE), 
+            population_density_per_sqmi = mean(population_density_per_sqmi, 
+                                               na.rm=TRUE), 
+            percent_fair_or_poor_health = mean(percent_fair_or_poor_health, 
+                                               na.rm=TRUE), 
+            percent_unemployed_CHR = mean(percent_unemployed_CHR, na.rm=TRUE), 
+            violent_crime_rate = mean(violent_crime_rate, na.rm=TRUE), 
+            chlamydia_rate = mean(chlamydia_rate, na.rm=TRUE), 
+            teen_birth_rate = mean(teen_birth_rate, na.rm=TRUE)
+            ) %>%
+  merge(covid_prevalence_table_state, by="state") %>%
+  arrange(desc(total_cases)) 
+```
+
+```{r density plots for numetric variables, warning=FALSE}
+
+
+par(mfrow=c(3, 4))
+
+covid_data_group_by_sate_long <- covid_data_group_by_sate %>%
+    select_if(is.numeric) %>%
+    pivot_longer(everything()) 
+
+covid_data_group_by_sate_long %>%
+  ggplot(aes(x=value)) + 
+  geom_density(fill='grey') +
+  facet_wrap(~name, scales='free') + 
+  theme(strip.text = element_text(size=7),
+        axis.text.x = element_text(size=5), 
+        axis.text.y = element_text(size=5), 
+        plot.title = element_text(hjust = 0.5)) +
+  labs(title="Density plots of numeric feature",
+       x ="", 
+       y = "Density") 
+
+
+```
+
+
+### Visualization 2 - relationships between total COVID-19 cases per capita of each state and other features
+
+```{r relationships between total COVID-19 cases per capita and other features, warning=FALSE}
+par(mfrow=c(3, 4))
+
+covid_data_group_by_sate_long <- covid_data_group_by_sate %>%
+    select_if(is.numeric) %>%
+    pivot_longer(-total_cases_per_capita) 
+
+case_per_capita_plot <- covid_data_group_by_sate_long %>%
+  ggplot(aes(x=value, y=total_cases_per_capita)) + 
+  geom_point(alpha = 0.4) +
+  facet_wrap(~name, scales='free') +
+  theme(strip.text = element_text(size=7),
+        axis.text.x = element_text(size=7), 
+        axis.text.y = element_text(size=7), 
+        plot.title = element_text(hjust = 0.5), 
+        panel.spacing = unit(2.5, "lines")) +
+  labs(title="Plots of total COVID-19 cases per capita v.s. other features",
+       x ="", 
+       y = "COVID-19 cases per capita") +
+  scale_x_continuous(labels = scales::label_number_si())
+
+
+fig_case_per_capita_plot <- ggplotly(case_per_capita_plot)
+fig_case_per_capita_plot
+```
+
+
+
+### Visualization 3 - relationships between average COVID-19 cases growth rate for each state and other features
+
+```{r relationships between average COVID-19 cases growth rate and other features, warning=FALSE}
+par(mfrow=c(3, 4))
+
+covid_data_group_by_sate_long <- covid_data_group_by_sate %>%
+    select_if(is.numeric) %>%
+    pivot_longer(-mean_cases_growth_rate) 
+
+covid_growth_rate_plot <- covid_data_group_by_sate_long %>%
+  ggplot(aes(x=value, y=mean_cases_growth_rate)) + 
+  geom_point(alpha = 0.4) +
+  facet_wrap(~name, scales='free') +
+  theme(strip.text = element_text(size=7),
+        axis.text.x = element_text(size=7), 
+        axis.text.y = element_text(size=7), 
+        plot.title = element_text(hjust = 0.5), 
+        panel.spacing = unit(2.5, "lines")) +
+  labs(title="Plots of average COVID-19 growth rate v.s. other features",
+       x ="", 
+       y = "COVID-19 growth rate") +
+  scale_x_continuous(labels = scales::label_number_si()) +
+  scale_y_continuous(labels = scales::label_number_si())
+
+fig_covid_growth_rate_plot <- ggplotly(covid_growth_rate_plot)
+fig_covid_growth_rate_plot
+```
+
+
+
+
+

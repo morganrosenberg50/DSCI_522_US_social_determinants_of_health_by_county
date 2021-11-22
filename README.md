@@ -19,6 +19,7 @@ COVID-19 cases in the county, as well as other features about the county
 ## EDA
 
 The results of EDA can be found here.
+Please download the HTML file to view the interactivity plots.
 
 ## Dependencies
 
