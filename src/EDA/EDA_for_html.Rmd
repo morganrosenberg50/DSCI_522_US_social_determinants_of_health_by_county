@@ -80,7 +80,7 @@ head(data.frame(covid_prevalence_table_state))
 tail(data.frame(covid_prevalence_table_state))
 
 ```
-There are `NA`s in the table because of the missing values for that county/state in the original dataset.
+There are `NA`s in the table because there are missing values for the population in that county/state in the dataset.
 
 ### Table of COVID-19 prevalence for every county
 
