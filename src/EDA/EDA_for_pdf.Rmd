@@ -17,7 +17,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(plotly)
 library(broom)
-
 ```
 
 Our GitHub Repo: 
@@ -29,6 +28,7 @@ Our GitHub Repo:
 ```{r load datasets for this assignment, message=FALSE}
 covid_data <- read.csv("data/US_counties_COVID19_health_weather_data.csv")
 ```
+
 
 ## Select features
 
@@ -51,11 +51,10 @@ covid_data <- covid_data %>%
 summary(covid_data)
 ```
 
+
 ## Exploratory Data Analysis (EDA)
 
 ### Table of COVID-19 prevalence for every state
-
-
 
 ```{r table of covid prevalence for each state, message=FALSE}
 covid_prevalence_table_state <- covid_data %>%
@@ -77,7 +76,8 @@ head(data.frame(covid_prevalence_table_state))
 tail(data.frame(covid_prevalence_table_state))
 
 ```
-There are `NA`s in the table because of the missing values for that county/state in the original dataset.
+There are `NA`s in the table because there are missing values for the population in that county/state in the dataset.
+
 
 ### Table of COVID-19 prevalence for every county
 
@@ -100,6 +100,7 @@ head(data.frame(covid_prevalence_table_county))
 tail(data.frame(covid_prevalence_table_county))
 
 ```
+
 
 ### Visualization 1 - distributions of numeric features
 
