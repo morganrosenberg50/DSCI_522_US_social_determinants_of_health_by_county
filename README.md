@@ -24,7 +24,7 @@ The results of EDA can be found [here](https://github.com/UBC-MDS/DSCI_522_US_so
 
 ## Usage
 
-To replicate the analysis, clone this GitHub repository, install the
+To replicate the analysis, please have a `kaggle.json` file containing your Kaggle credentials at the root. To obtain your Kaggle credentials, follow the instructions on [Kaggle](https://www.kaggle.com/docs/api). Next, clone this GitHub repository, install the
 dependencies listed below, and run the following
 commands at the command line/terminal from the root directory of this
 project:
