@@ -27,7 +27,7 @@ Our GitHub Repo:
 ## Load Data
 
 ```{r load datasets for this assignment, message=FALSE}
-covid_data <- read.csv("US_counties_COVID19_health_weather_data.csv")
+covid_data <- read.csv("data/US_counties_COVID19_health_weather_data.csv")
 ```
 
 ## Select features
