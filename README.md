@@ -42,6 +42,7 @@ project:
     -   lemon=0.4.5
     -   broom=0.7.9
     -   plotly=4.10.0
+    -   here=1.0.1
 
 # **Proposal**
 
