@@ -80,7 +80,7 @@ COVID-19 cases since the model has easily interpretable coefficients.
 -   Linear regression with number of cases as the response variable and
     the features as the explanatory variables
 
-### DA and Communicating Results:
+### EDA and Communicating Results:
 
 Table: List of COVID-19 prevalence per county (total cases, per capita,
 growth rate). This will inform our baseline understanding of the most
