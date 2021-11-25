@@ -2,13 +2,15 @@
 # date: 2021-11-23
 
 "This script performs an analysis on the socioeconomic features associated with COVID-19 cases
-Usage: get_data.R --in_file=<in_file> --out_dir=<out_dir>
+Usage: analyse_socioeconomic_features.R --in_file=<in_file> --out_dir=<out_dir>
 
 Options:
 --in_file=<in_file>           Path including filename of processed data
 --out_dir=<out_dir>           Directory of where to locally write the
                               figures and tables
 " -> doc
+
+# Rscript src/analyse_socioeconomic_features.R --in_file=data/US_counties_COVID19_health_weather_data.csv --out_dir=results
 
 library(tidyverse)
 library(testthat)
@@ -41,11 +43,13 @@ main <- function(opt) {
       total_cases = max(cases),
       across(total_population:teen_birth_rate, mean)) |>
     mutate(cases_per_capita = total_cases / total_population)
+  
+  non_features <- c("county", "total_cases", "num_deaths",
+                    "total_population", "cases_per_capita")
+  
+  model_features <- get_features(model_df, non_features)
 
-  model_features <- colnames(model_df)[c(-1, -2, -length(colnames(model_df)))]
-
-  standardised_data <- model_df |>
-    mutate_at(model_features, ~(scale(.) %>% as.vector))
+  standardised_data <- standardise_features(model_df, model_features)
 
   mlr <- lm(cases_per_capita ~ percent_smokers +
               percent_vaccinated + income_ratio +
@@ -56,7 +60,8 @@ main <- function(opt) {
 
   mlr_tidy <- mlr |>
     tidy(conf.int = TRUE) |>
-    arrange(desc(estimate))
+    arrange(desc(estimate)) |>
+    mutate(is_sig = p.value < 0.05)
 
   print(mlr_tidy)
 
@@ -73,16 +78,57 @@ main <- function(opt) {
   
 }
 
-main(opt)
+get_features <- function(data, non_features) {
+  if (!is.data.frame(data)) {
+    stop("Input data argument is not a data frame")
+  }
+  data |>
+    select(!all_of(non_features)) |>
+    colnames()
+}
 
-
-
-
-
-
-
-
-
-
-
+test_get_features <- function() {
+  test_df <- data.frame(a = c(1, 2),
+                        b = c(2, 3),
+                        c = c(3, 4),
+                        d = c(4, 5))
   
+  res_features <-get_features(test_df, c("b", "c"))
+  
+  test_that("Features should exclude all non-features", {
+    expect_equal(res_features, c("a", "d"))
+  })
+}
+
+standardise_features <- function(data, features) {
+  if (!is.data.frame(data)) {
+    stop("Input data argument is not a data frame")
+  }
+  data |>
+    mutate_at(features, ~(scale(.) %>% as.vector))
+}
+
+test_standardise_features <- function() {
+  test_df <- data.frame(response = c(1, 0),
+                        feature1 = c(1, 0),
+                        feature2 = c(1, -1))
+  
+  standardised_test_df <- standardise_features(
+    test_df,
+    c("feature1", "feature2"))
+  
+  test_that("Feature values are not standardised as expected", {
+    expect_equal(standardised_test_df$feature1, c(0.7071068, -0.7071068),
+                 tolerance = 0.01)
+    expect_equal(standardised_test_df$feature2, c(0.7071068, -0.7071068),
+                 tolerance = 0.01)
+  })
+  test_that("Input data should be a data frame", {
+    expect_error(standardise_features(c(1, 2), c("feature1", "feature2")))
+  })
+}
+
+test_get_features()
+test_standardise_features()
+
+main(opt)
