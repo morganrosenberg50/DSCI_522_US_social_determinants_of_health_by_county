@@ -60,7 +60,7 @@ filter_data <- function(raw_data){
     mutate(
       total_cases = max_cases*10**5/total_population,
       deaths_per_100k = num_deaths*10**5/total_population,
-      teen_birth_rate = teen_birth_rate*100
+      teen_birth_rate = teen_birth_rate*100,
       cases_per_100k = max_cases*10**5/total_population,
     )
   ## important note: teen birth rate is per thousand females, all other rates are per 100
