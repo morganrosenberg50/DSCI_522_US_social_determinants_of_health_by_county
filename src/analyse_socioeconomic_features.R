@@ -1,5 +1,5 @@
 # author: Joshua Sia
-# date: 2021-11-23
+# date: 2021-11-25
 
 "This script performs an analysis on the socioeconomic features associated with COVID-19 cases
 Usage: analyse_socioeconomic_features.R --in_file=<in_file> --out_dir=<out_dir>
@@ -64,6 +64,7 @@ main <- function(opt) {
     mutate(is_sig = p.value < 0.05)
 
   print(mlr_tidy)
+  saveRDS(mlr_tidy, file = here(opt$out_dir, "mlr_model.rds"))
 
   estimate_plot <- mlr_tidy |>
     ggplot(aes(x = estimate, y = factor(term, levels = term))) +
