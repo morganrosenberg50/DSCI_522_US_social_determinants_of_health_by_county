@@ -54,7 +54,6 @@ filter_data <- function(raw_data){
     summarize(
       state = first(state),
       max_cases = max(cases),
-      cases_per_100k = cases*10**5/total_population,
       avg_growth_rate = mean(cases_growth_rate, na.rm = TRUE),
       max_growth_rate = max(cases_growth_rate, na.rm = TRUE),
       across(total_population:teen_birth_rate, mean)) |>
@@ -62,6 +61,7 @@ filter_data <- function(raw_data){
       total_cases = max_cases*10**5/total_population,
       deaths_per_100k = num_deaths*10**5/total_population,
       teen_birth_rate = teen_birth_rate*100
+      cases_per_100k = max_cases*10**5/total_population,
     )
   ## important note: teen birth rate is per thousand females, all other rates are per 100
 }
