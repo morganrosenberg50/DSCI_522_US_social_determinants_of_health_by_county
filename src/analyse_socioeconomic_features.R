@@ -32,7 +32,7 @@ main <- function(opt) {
     "percent_unemployed_CHR", "violent_crime_rate", "chlamydia_rate",
     "teen_birth_rate")
 
-  # Standardise features data
+  # Standardize features data
   standardised_data <- standardise_features(df, model_features)
 
   # Build model
