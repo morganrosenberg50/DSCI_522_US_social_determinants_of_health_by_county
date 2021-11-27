@@ -18,20 +18,37 @@ Each row in the data set represents a date corresponding to the number
 of COVID-19 cases in the county, as well as other features about the
 county (e.g. smokers percentage, population, income ratio, etc.).
 
-## **EDA**
+## **Report**
 
-The results of EDA can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/src/EDA/EDA_for_pdf.pdf). Please download the [HTML file](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/src/EDA/EDA_for_html.html) to view the interactive plots.
+The final report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.md). The final report can also be downloaded as a html file [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.html).
 
 ## Usage
 
-To replicate the analysis, please have a `kaggle.json` file containing your Kaggle credentials and a `data` directory at the root. To obtain your Kaggle credentials, follow the instructions on [Kaggle](https://www.kaggle.com/docs/api). Next, clone this GitHub repository, install the
+To replicate the analysis, please have a `kaggle.json` file containing your Kaggle credentials and a `data` directory at the root containing the subdirectories `raw` and `processed`. To obtain your Kaggle credentials, follow the instructions on [Kaggle](https://www.kaggle.com/docs/api). Next, clone this GitHub repository, install the
 dependencies listed below, and run the following
 commands at the command line/terminal from the root directory of this
 project:
 
 
-    Rscript src/get_kaggle_data.R --url=https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data --file=US_counties_COVID19_health_weather_data.csv --out_file=data/US_counties_COVID19_health_weather_data.csv
-    Rscript -e "rmarkdown::render('src/EDA/EDA_for_pdf.Rmd')"
+    bash runall.sh
+    
+Or the scripts can be run individually as:
+    
+    # Download data file
+    Rscript src/get_kaggle_data.R --url=https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data --file=US_counties_COVID19_health_weather_data.csv --out_file=data/raw/US_counties_COVID19_health_weather_data.csv
+
+    # Perform data wrangling
+    Rscript src/data_wrangling.r --input=data/raw/US_counties_COVID19_health_weather_data.csv --output=data/processed
+
+    # EDA
+    Rscript src/eda_covid_socioeconomics.r --in_file=data/processed/cleaned_data.csv --out_dir=results
+
+    # Perform data analysis
+    Rscript src/analyse_socioeconomic_features.R --in_file=data/processed/cleaned_data.csv --out_dir=results
+
+    # Render report
+    Rscript -e "rmarkdown::render('doc/covid_socioeconomic_report.Rmd')"
+    
 
 ## **Dependencies**
 -   R version 4.1.1 and R packages:
@@ -44,59 +61,8 @@ project:
     -   plotly=4.10.0
     -   here=1.0.1
 
-# **Proposal**
-
-## Data Set:
-
-US Counties: COVID19 + Weather + Socio/Health data
-
 ## License:
 
-CC0 Public Domain
+The US social determinants of health by county data set is licensed under CC0 Public Domain.
 
-### Research Question \[Inference\]:
-
-How are certain features associated with the prevalence of COVID-19
-cases?
-
-#### 1. Which features (columns) should be included in this analysis (there are \<200 columns right now)? \[Exploratory\]
-
-Proposed: We will begin by selecting features by intuition, and then
-iteratively remove statistically insignificant or practically non-useful
-features, while adding new features we become curious about.
-
-#### 2. What is an appropriate model to assess the relationship between features and COVID-19 cases? \[Exploratory\]
-
-Proposed: A linear regression model will be the most effective to
-identify statistically significant relationships between features and
-COVID-19 cases since the model has easily interpretable coefficients.
-
-### Analysis Tools:
-
--   Subset list of column features based on intuition to select
-    explanatory variables
--   Check descriptive statistics (e.g. distribution, maximum, minimum,
-    mean, etc.)
--   Linear regression with number of cases as the response variable and
-    the features as the explanatory variables
-
-### EDA and Communicating Results:
-
-Table: List of COVID-19 prevalence per county (total cases, per capita,
-growth rate). This will inform our baseline understanding of the most
-affected counties, which could then give us contextual understanding to
-further our EDA, and interpretation of our analysis. We will experiment
-by arranging this data in different orders (e.g. group by county, sort
-in descending order of each column) and display the most informative
-version(s) of the chart.
-
-Figure: Successive scatterplots comparing total cases/ capita / county
-with mean incidence / county of each of our potential features This will
-inform general observable trends between the features and the incidence
-of COVID-19, and give an early indication if our question and summary
-statistics (total COVID-19 cases and feature values) will bear useful
-insights These will be displayed in a \~5x5 table of charts so that we
-can quickly glance and infer the above insights
-
-Google Docs version:
-<https://docs.google.com/document/d/1xz1IXzIOj5ipOBCKeWuyp-FSJ5Tw5v0nJb0PJr-Zozw/edit>
+## References
