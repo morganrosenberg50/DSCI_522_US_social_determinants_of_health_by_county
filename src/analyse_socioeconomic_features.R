@@ -44,7 +44,6 @@ main <- function(opt) {
     mutate(is_sig = p.value < 0.05)
 
   print(mlr_tidy)
-  saveRDS(mlr_tidy, file = here(opt$out_dir, "mlr_model.rds"))
 
   estimate_plot <- mlr_tidy |>
     ggplot(aes(x = estimate, y = factor(term, levels = term))) +
@@ -57,6 +56,9 @@ main <- function(opt) {
 
   ggsave(here(opt$out_dir, "feature_coefs.png"), width = 7, height = 3)
   
+  saved_mlr <- mlr_tidy |>
+    select(term, estimate, conf.low, conf.high, p.value, is_sig)
+  saveRDS(saved_mlr, file = here(opt$out_dir, "mlr_model.rds"))
 }
 
 standardise_features <- function(data, features) {

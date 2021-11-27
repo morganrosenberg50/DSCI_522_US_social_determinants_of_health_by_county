@@ -1,5 +1,5 @@
-#author: Group 25
-# date: 2021-11-24
+# Author: Morgan Rosenberg
+# Date: 2021-11-24
 
 "Cleans and organizes data from US Counties: COVID19 + Weather + Socio/Health data (https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data)
 Writes the data to a separate feather file.
