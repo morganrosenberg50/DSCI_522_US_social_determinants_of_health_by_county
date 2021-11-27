@@ -18,6 +18,8 @@ Each row in the data set represents a date corresponding to the number
 of COVID-19 cases in the county, as well as other features about the
 county (e.g. smokers percentage, population, income ratio, etc.).
 
+Here we attempt to build a Multiple linear regression model which can use to quantify the influence of potential factors on the COVID-19 prevalence(measured by cases per 100k population) among all the US counties. Our final regression model suggests that the percentage of smokers, teenage birth rate and chlamydia rate are the three features most strongly associated with COVID-19 prevalence. However, the intercept term is the one with the largest value. This means there are other unobserved factors weighted significantly in explaining the COVID-19 prevalence, thus we should continue the study to find and include those potential factors from 200 variables in the original dataset to improve the explanation of COVID-19 prevalence.
+
 ## **Report**
 
 The final report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.md). The final report can also be downloaded as a html file [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.html). A preview of the final report as a html file can be viewed [here](https://htmlpreview.github.io/?https://github.com/joshsia/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.html).

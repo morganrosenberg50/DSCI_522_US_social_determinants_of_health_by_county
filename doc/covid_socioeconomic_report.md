@@ -1,51 +1,54 @@
-Report for US social determinants of health by county dataset
-================
-Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25)
-11/27/2021
+---
+title: "Report for US social determinants of health by county dataset"
+author: "Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25) </br>"
+date: "2021/11/27"
+always_allow_html: true
+output: 
+  html_document:
+    toc: true
+  github_document:
+    toc: true
+bibliography: covid_socioeconomic_refs.bib
+---
 
-## Setup
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(docopt)
+library(tidyverse)
+library(plotly)
+library(broom)
+library(testthat)
+library(here)
+```
 
-Our GitHub Repo:
-<a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong>https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county</strong></a>
+# Setup
 
-## Introduction
+Our GitHub Repo: <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county></strong></a>
+
+# Summary
+
+Here we attempt to build a Multiple linear regression model which can use to quantify the influence of potential factors on the Covid19 prevalence(measured by cases per 100k population) among all the US counties. Our final regression model indicates that the percentage of smokers and teenager birth rate and chlamydia rate are three features that highest positive relationship with Covid19 cases. However, the intercept term is the one with the largest value. This means there are other unobserved factors weighted significantly in explaining the Covid19 prevalence, thus we should continue the study to find and include those potential factors from 200 variables in the original dataset to improve the ​​interpretability of the amount of Covid19 cases.
+
+# Introduction
+
+The original data set contained over 200 features with a high degree of granularity to support different exploratory questions. We identified a subset of these features whose relationship to COVID-19 prevalence we believed to be of interest to the general population based on intuition and validated by a media scan. We also added a few "wildcard" features ("chlamydia" and "teen birth rate") which might be related to broader social determinants of public health. In the future, we might choose to add additional features as they are requested by the community or become of interest to the team.
+
+In addition, our original data reported observations as a time series per county. However, due to limits in measurement and reporting, their was a varied rate of change for different features (e.g. COVID-19 cases were reported daily, whereas many other features were reported no more than once per month). As such, we believe it is most effective to summarize the data into static summary measures per county. In the processed data, we normalized the teen birth rate by per thousand females, and all other rates are by per 100k people.
+
+Each row in the processed data set contains normalized COVID-19 related features and other normalized demographic statistics for each county. There are 1621 observations in the data set, and 18 features. There are 0 observations with missing values in the data set. Below we show the descriptive statistics of the dataset.
+
+# Methods
 
 ## Data
 
-The original data set used in this project is of US social determinants
-of health by county created by Dr. John Davis at Indiana University, the
-United States. Each row in the original data set represents a day with
-its corresponding COVID-19 cases (accumulated), number of deaths due to
-COVID-19 (accumulated), and other demographic statistics.
+The original data set used in this project is of US social determinants of health by county created by Dr. John Davis at Indiana University, the United States. Each row in the original data set represents a day with its corresponding COVID-19 cases (accumulated), number of deaths due to COVID-19 (accumulated), and other demographic statistics.
 
-## Methods
+## Analysis
 
-The original data set contained over 200 features with a high degree of
-granularity to support different exploratory questions. We identified a
-subset of these features whose relationship to COVID-19 prevalence we
-believed to be of interest to the general population based on intuition
-and validated by a media scan. We also added a few “wildcard” features
-(“chlamydia” and “teen birth rate”) which might be related to broader
-social determinants of public health. In the future, we might choose to
-add additional features as they are requested by the community or become
-of interest to the team.
+The Multiple linear regression was used to quantify the influence of potential factors we chosen on the Covid19 prevalence(measured by cases per 100k population) among all the US counties. All variables included in the original data set, The R programming languages [@R] and the following R packages were used to perform the analysis:broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], here [@here]. The code used to perform the analysis and create this report can be found here: <https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county>.
 
-In addition, our original data reported observations as a time series
-per county. However, due to limits in measurement and reporting, their
-was a varied rate of change for different features (e.g. COVID-19 cases
-were reported daily, whereas many other features were reported no more
-than once per month). As such, we believe it is most effective to
-summarize the data into static summary measures per county. In the
-processed data, we normalized the teen birth rate by per thousand
-females, and all other rates are by per 100k people.
-
-Each row in the processed data set contains normalized COVID-19 related
-features and other normalized demographic statistics for each county.
-There are 1621 observations in the data set, and 18 features. There are
-0 observations with missing values in the data set. Below we show the
-descriptive statistics of the dataset.
-
-## Results
+# Results & Discussion
 
 Here we demonstrated
 
@@ -55,38 +58,7 @@ Here we demonstrated
 -   the bottom of the dataset; and
 -   the number of unique values in each feature.
 
-| county    | state          | max_cases | avg_growth_rate | max_growth_rate | total_population | num_deaths | percent_smokers | percent_vaccinated | income_ratio | population_density_per_sqmi | percent_fair_or_poor_health | percent_unemployed_CHR | violent_crime_rate | chlamydia_rate | teen_birth_rate | total_cases | deaths_per_100k | cases_per_100k |
-|:----------|:---------------|----------:|----------------:|----------------:|-----------------:|-----------:|----------------:|-------------------:|-------------:|----------------------------:|----------------------------:|-----------------------:|-------------------:|---------------:|----------------:|------------:|----------------:|---------------:|
-| Abbeville | South Carolina |      1002 |       0.0229577 |       0.6666667 |         24951.00 |   430.0000 |        17.32352 |           29.00000 |     5.219207 |                    50.87034 |                    19.89504 |               3.976934 |           341.1931 |       647.2000 |        2848.211 |    4015.871 |       1723.3778 |       4015.871 |
-| Acadia    | Louisiana      |      4197 |       0.0268592 |       0.7179487 |         62372.00 |  1027.0000 |        21.53409 |           48.00000 |     5.804627 |                    95.20564 |                    20.89004 |               5.373246 |           443.4069 |       576.8000 |        4733.896 |    6728.981 |       1646.5722 |       6728.981 |
-| Accomack  | Virginia       |      1367 |       0.0238804 |       0.5000000 |         33060.00 |   600.0000 |        18.31693 |           44.00000 |     4.160476 |                    73.57990 |                    20.08920 |               3.812194 |           225.8680 |       648.3000 |        3104.832 |    4134.906 |       1814.8820 |       4134.906 |
-| Ada       | Idaho          |     27461 |       0.0335827 |       0.6363636 |        425798.00 |  3940.0000 |        11.99070 |           48.00000 |     4.478032 |                   404.55146 |                    11.47488 |               2.459871 |           230.6335 |       448.7000 |        1308.355 |    6449.302 |        925.3214 |       6449.302 |
-| Adair     | Iowa           |      1294 |      -2.7801822 |       0.9879518 |         18467.60 |   286.8548 |        21.55887 |           45.52895 |     5.050669 |                    35.66845 |                    21.58778 |               3.757364 |           212.1026 |       392.8401 |        2761.632 |    7006.865 |       1553.2863 |       7006.865 |
-| Adams     | Colorado       |     31594 |      -5.7408231 |       0.9988620 |         99964.39 |  1140.8011 |        17.43496 |           44.76759 |     4.506176 |                   114.79119 |                    18.68980 |               4.583603 |           240.4581 |       434.3257 |        3272.239 |   31605.256 |       1141.2075 |      31605.256 |
-
-Table 1. First few rows data set
-
-| county  | state        | max_cases | avg_growth_rate | max_growth_rate | total_population | num_deaths | percent_smokers | percent_vaccinated | income_ratio | population_density_per_sqmi | percent_fair_or_poor_health | percent_unemployed_CHR | violent_crime_rate | chlamydia_rate | teen_birth_rate | total_cases | deaths_per_100k | cases_per_100k |
-|:--------|:-------------|----------:|----------------:|----------------:|-----------------:|-----------:|----------------:|-------------------:|-------------:|----------------------------:|----------------------------:|-----------------------:|-------------------:|---------------:|----------------:|------------:|----------------:|---------------:|
-| Young   | Texas        |       977 |       0.0237129 |       0.6666667 |            18275 |     342.00 |        15.94356 |           38.00000 |     4.157615 |                   19.984283 |                    18.09056 |               3.236839 |          169.44520 |       200.2000 |        4787.666 |    5346.101 |       1871.4090 |       5346.101 |
-| Yuba    | California   |      2403 |       0.0255391 |       0.5000000 |            73897 |    1164.00 |        14.17914 |           40.00000 |     4.603198 |                  116.918634 |                    16.39254 |               6.406906 |          413.72712 |       398.5000 |        3080.498 |    3251.823 |       1575.1654 |       3251.823 |
-| Yuma    | Colorado     |     18762 |     -43.1925404 |       0.9948630 |           106351 |    1040.36 |        13.80424 |           26.45211 |     4.239954 |                   20.518103 |                    18.98300 |               9.509770 |          167.04944 |       373.7234 |        3566.269 |   17641.584 |        978.2326 |      17641.584 |
-| Zapata  | Texas        |       548 |       0.0226051 |       0.6666667 |            14335 |     158.00 |        17.27549 |           32.00000 |     5.416122 |                   14.357800 |                    35.61071 |               5.561756 |           96.04171 |       251.4000 |        7378.882 |    3822.811 |       1102.1974 |       3822.811 |
-| Zavala  | Texas        |       816 |       0.0237404 |       0.7142857 |            12107 |     169.00 |        19.87128 |           26.00000 |     5.051775 |                    9.331695 |                    40.99069 |               9.546340 |          176.55367 |        83.7000 |        6439.283 |    6739.903 |       1395.8867 |       6739.903 |
-| Ziebach | South Dakota |       237 |       0.0173153 |       0.6969697 |             2818 |      32.00 |        32.02117 |           19.00000 |     5.319645 |                    1.436850 |                    29.16651 |               5.144694 |            0.00000 |       870.8000 |        2966.102 |    8410.220 |       1135.5571 |       8410.220 |
-
-Table 2. Last few rows of data set
-
-|     | county           | state            | max_cases     | avg_growth_rate | max_growth_rate | total_population | num_deaths    | percent_smokers | percent_vaccinated | income_ratio   | population_density_per_sqmi | percent_fair_or_poor_health | percent_unemployed_CHR | violent_crime_rate | chlamydia_rate | teen_birth_rate | total_cases     | deaths_per_100k | cases_per_100k  |
-|:----|:-----------------|:-----------------|:--------------|:----------------|:----------------|:-----------------|:--------------|:----------------|:-------------------|:---------------|:----------------------------|:----------------------------|:-----------------------|:-------------------|:---------------|:----------------|:----------------|:----------------|:----------------|
-|     | Length:1621      | Length:1621      | Min. : 46     | Min. :-379.1271 | Min. :0.2000    | Min. : 2083      | Min. : 32     | Min. : 5.909    | Min. : 7.00        | Min. : 2.638   | Min. : 0.712                | Min. : 9.275                | Min. : 1.582           | Min. : 0.0         | Min. : 35.8    | Min. : 210.9    | Min. : 170.3    | Min. : 465.1    | Min. : 170.3    |
-|     | Class :character | Class :character | 1st Qu.: 764  | 1st Qu.: 0.0174 | 1st Qu.:0.5000  | 1st Qu.: 17324   | 1st Qu.: 265  | 1st Qu.:15.108  | 1st Qu.:38.00      | 1st Qu.: 4.085 | 1st Qu.: 25.577             | 1st Qu.:14.743              | 1st Qu.: 3.305         | 1st Qu.: 144.8     | 1st Qu.: 254.2 | 1st Qu.:2001.3  | 1st Qu.: 3465.3 | 1st Qu.:1179.9  | 1st Qu.: 3465.3 |
-|     | Mode :character  | Mode :character  | Median : 1966 | Median : 0.0239 | Median :0.6000  | Median : 38488   | Median : 568  | Median :17.133  | Median :44.00      | Median : 4.438 | Median : 61.897             | Median :17.443              | Median : 3.961         | Median : 230.4     | Median : 358.6 | Median :2812.2  | Median : 5126.8 | Median :1433.9  | Median : 5126.8 |
-|     | NA               | NA               | Mean : 7279   | Mean : -2.7990  | Mean :0.6517    | Mean : 130794    | Mean : 1512   | Mean :17.344    | Mean :42.71        | Mean : 4.550   | Mean : 292.342              | Mean :17.996                | Mean : 4.170           | Mean : 269.0       | Mean : 411.5   | Mean :2969.0    | Mean : 6103.9   | Mean :1464.2    | Mean : 6103.9   |
-|     | NA               | NA               | 3rd Qu.: 5723 | 3rd Qu.: 0.0274 | 3rd Qu.:0.8000  | 3rd Qu.: 98673   | 3rd Qu.: 1320 | 3rd Qu.:19.316  | 3rd Qu.:49.00      | 3rd Qu.: 4.869 | 3rd Qu.: 163.663            | 3rd Qu.:20.678              | 3rd Qu.: 4.766         | 3rd Qu.: 349.5     | 3rd Qu.: 511.6 | 3rd Qu.:3768.1  | 3rd Qu.: 7161.6 | 3rd Qu.:1720.8  | 3rd Qu.: 7161.6 |
-|     | NA               | NA               | Max. :430713  | Max. : 0.0390   | Max. :0.9999    | Max. :10057155   | Max. :84296   | Max. :37.579    | Max. :66.00        | Max. :11.971   | Max. :28069.676             | Max. :40.991                | Max. :18.092           | Max. :1819.5       | Max. :1895.5   | Max. :9132.9    | Max. :56251.5   | Max. :3183.1    | Max. :56251.5   |
-
-Table 3. Summary statistics of data set
+Table 1. Summary statistics of data set
 
 |                             |    x |
 |:----------------------------|-----:|
@@ -110,13 +82,11 @@ Table 3. Summary statistics of data set
 | deaths_per_100k             | 1621 |
 | cases_per_100k              | 1621 |
 
-Table 4. Number of unique values for each column in data set
+Table 2. Number of unique values for each column in data set
 
 ## Exploratory Data Analysis (EDA)
 
-To look at whether each of the features might be useful to determine the
-change of COVID-19 cases, we first created two summary tables to check
-COVID-19 prevalence for each state and for each county.
+To look at whether each of the features might be useful to determine the change of COVID-19 cases, we first created two summary tables to check COVID-19 prevalence for each state and for each county.
 
 ### Table of COVID-19 prevalence for every county
 
@@ -129,7 +99,7 @@ COVID-19 prevalence for each state and for each county.
 | Maricopa      | Arizona    |    224924 |       5501.316 |       0.0347391 |       0.5000000 |
 | Harris        | Texas      |    195558 |       8472.749 |     -66.2769127 |       0.9964581 |
 
-Table 5. Top 5 counties with highest COVID-19 growth rate.
+Table 3. Top 5 counties with highest COVID-19 growth rate.
 
 |      | county      | state    | max_cases | cases_per_100k | avg_growth_rate | max_growth_rate |
 |:-----|:------------|:---------|----------:|---------------:|----------------:|----------------:|
@@ -140,7 +110,7 @@ Table 5. Top 5 counties with highest COVID-19 growth rate.
 | 1620 | Piscataquis | Maine    |        57 |       334.4285 |       0.0134190 |       0.5000000 |
 | 1621 | Grand Isle  | Vermont  |        46 |       662.3470 |       0.0132021 |       0.6666667 |
 
-Table 6. Top 5 counties with lowest COVID-19 growth rate.
+Table 4. Top 5 counties with lowest COVID-19 growth rate.
 
 ### Table of COVID-19 prevalence for every state
 
@@ -153,7 +123,7 @@ Table 6. Top 5 counties with lowest COVID-19 growth rate.
 | New York   |    586878 |       113808.1 |      -5.7251701 |       0.7163069 |
 | Georgia    |    452834 |       743968.0 |      -2.2504604 |       0.7116388 |
 
-Table 7. Top 5 states with highest COVID-19 growth rate.
+Table 5. Top 5 states with highest COVID-19 growth rate.
 
 |     | state                | max_cases | cases_per_100k | avg_growth_rate | max_growth_rate |
 |:----|:---------------------|----------:|---------------:|----------------:|----------------:|
@@ -164,30 +134,32 @@ Table 7. Top 5 states with highest COVID-19 growth rate.
 | 50  | New Hampshire        |     12374 |      10509.595 |      -0.6624274 |       0.6426744 |
 | 51  | Vermont              |      3256 |       5541.161 |       0.0169872 |       0.5543210 |
 
-Table 8. Top 5 states with lowest COVID-19 growth rate.
+Table 6. Top 5 states with lowest COVID-19 growth rate.
 
 ### Visualization 1 - distributions of numeric features
 
-Then we created density plots for all numeric variables to check the
-distributions.
+Then we created density plots for all numeric variables to check the distributions.
 
-<img src="/Users/josh/DSCI_522_US_social_determinants_of_health_by_county/results/numeric_feats_dist.png" title="Figure 1. Density plots of numeric feature" alt="Figure 1. Density plots of numeric feature" width="100%" />
+```{r predictor-distributions, echo=FALSE, fig.cap="Figure 1. Density plots of numeric feature" alt="Figure 1. Density plots of numeric feature", out.width='100%'}
+knitr::include_graphics("../results/numeric_feats_dist.png")
+```
 
 ### Visualization 2 - relationships between total COVID-19 cases per 100k of each state and other features
 
-In addition, we created plots to demonstrate relationshipts between
-COVID-19 cases per 100k of each state and other features in the dataset.
+In addition, we created plots to demonstrate relationshipts between COVID-19 cases per 100k of each state and other features in the dataset.
 
-<img src="/Users/josh/DSCI_522_US_social_determinants_of_health_by_county/results/cases_per_100k.png" title="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features" alt="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features" width="100%" />
+```{r predictor-distributions, echo=FALSE, fig.cap="Figure 2. Scatter plots of total COVID-19 cases per 100k v.s. other features", out.width='100%'}
+knitr::include_graphics("../results/cases_per_100k.png")
+```
 
 ### Visualization 3 - relationships between average COVID-19 cases growth rate for each state and other features
 
-We also created plots to demonstrate relationshipts between average
-COVID-19 cases growth rate of each state and other features in the
-dataset.
+We also created plots to demonstrate relationshipts between average COVID-19 cases growth rate of each state and other features in the dataset.
 
-<img src="/Users/josh/DSCI_522_US_social_determinants_of_health_by_county/results/growth_rate.png" title="Figure 3. Plots of average COVID-19 growth rate v.s. other features" alt="Figure 3. Plots of average COVID-19 growth rate v.s. other features" width="100%" />
-
+```{r predictor-distributions, echo=FALSE, fig.cap="Figure 3. Scatter plots of average COVID-19 growth rate v.s. other features", out.width='100%'}
+knitr::include_graphics("../results/growth_rate.png")
+```
+## Data Analysis(Modeling)
 The results of data analysis:
 
 | term                        |   estimate |  conf.low |  conf.high |   p.value | is_sig |
@@ -203,9 +175,14 @@ The results of data analysis:
 | percent_fair_or_poor_health | -205.36215 | -656.1671 |  245.44281 | 0.3717101 | FALSE  |
 | percent_unemployed_CHR      | -731.93358 | -996.1554 | -467.71180 | 0.0000001 | TRUE   |
 
-Table 9. Coefficients of each feature of the multiple linear regression
-model.
+Table 7. Coefficients of each feature of the multiple linear regression model.
 
-<img src="/Users/josh/DSCI_522_US_social_determinants_of_health_by_county/results/feature_coefs.png" title="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals." alt="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals." width="100%" />
+### Visualization 4 - Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.
+
+```{r predictor-distributions, echo=FALSE, fig.cap="Figure 4. Coefficients bar chart of the multiple linear regression model with 95% confidence intervals", out.width='100%'}
+knitr::include_graphics("../results/feature_coefs.png")
+```
+The multiple linear regression result reveals that only three features and the intercept term are statistically significant on 5% significant level. After normalizing all features, the value of the intercept term is larger than the sum of the absolute coefficient of all other significant features. This means our current model has low explanatory power on the responsive variable covid19 cases, which enables the intercept term to capture most of the changes. 
+To further improve this model in future with hopes of finding the essential influence factors of covid19 prevalence, we need to improve our feature selecting process by using methods like PCA model and incorporating advanced feature engineering techniques.
 
 ## References
