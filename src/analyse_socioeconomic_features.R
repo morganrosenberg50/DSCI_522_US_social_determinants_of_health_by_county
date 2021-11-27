@@ -23,7 +23,7 @@ opt <- docopt(doc)
 main <- function(opt) {
   df <- read_csv(opt$in_file)
   
-  # Change to features
+  # Specify response and features
   response <- "cases_per_100k"
   
   model_features <- c(
@@ -32,8 +32,10 @@ main <- function(opt) {
     "percent_unemployed_CHR", "violent_crime_rate", "chlamydia_rate",
     "teen_birth_rate")
 
+  # Standardize features data
   standardised_data <- standardise_features(df, model_features)
 
+  # Build model
   mlr <- lm(cases_per_100k ~ .,
             data = standardised_data |>
               select(c(response, model_features)))
