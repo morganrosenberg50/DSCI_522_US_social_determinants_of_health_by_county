@@ -4,7 +4,7 @@ author: "Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25)"
 date: "11/27/2021"
 bibliography: references.bib
 output:
-  github_document
+  html_document
 ---
 
 
