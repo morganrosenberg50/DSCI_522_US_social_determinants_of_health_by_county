@@ -56,10 +56,10 @@ Or the scripts can be run individually as:
     -   tidyverse=1.3.1
     -   httr=1.4.2
     -   jsonlite=1.7.2
-    -   lemon=0.4.5
     -   broom=0.7.9
     -   plotly=4.10.0
     -   here=1.0.1
+    -   knitr=1.33
 
 ## License:
 
