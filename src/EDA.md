@@ -1,3 +1,9 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
 ## Setup
 
 ``` r
@@ -8,7 +14,7 @@ library(knitr)
 ```
 
 Our GitHub Repo:
-<a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong>https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county</strong></a>
+<a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county></strong></a>
 
 ## Load Data
 
@@ -28,14 +34,14 @@ The original data set contained over 200 features with a high degree of
 granularity to support different exploratory questions. We identified a
 subset of these features whose relationship to COVID-19 prevalence we
 believed to be of interest to the general population based on intuition
-and validated by a media scan. We also added a few “wildcard” features
-(“chlamydia” and “teen birth rate”) which might be related to broader
+and validated by a media scan. We also added a few "wildcard" features
+("chlamydia" and "teen birth rate") which might be related to broader
 social determinants of public health. In the future, we might choose to
 add additional features as they are requested by the community or become
 of interest to the team.
 
 In addition, our original data reported observations as a time series
-per county. However, due to limits in measurement and reporting, their
+per county. However, due to limits in measurement and reporting, there
 was a varied rate of change for different features (e.g. COVID-19 cases
 were reported daily, whereas many other features were reported no more
 than once per month). As such, we believe it is most effective to
@@ -222,7 +228,7 @@ kable(head(data.frame(covid_prevalence_table_state)),
 | New York   |    586878 |       113808.1 |      -5.7251701 |       0.7163069 |
 | Georgia    |    452834 |       743968.0 |      -2.2504604 |       0.7116388 |
 
-Table 3. Top 5 states with highest COVID-19 growth rate.
+Table 3. Top 5 states with highest max COVID-19 growth rate.
 
 ``` r
 kable(tail(data.frame(covid_prevalence_table_state)), 
@@ -281,13 +287,13 @@ covid_data_group_by_sate %>%
        y = "Density") 
 ```
 
-<div class="figure">
+::: figure
 ![](fig/density_plots.png)<!-- -->
 
 Figure 1. Density plots of numeric feature
-</p>
 
-</div>
+</p>
+:::
 
 ### Visualization 2 - relationships between total COVID-19 cases per 100k of each state and other features
 
@@ -318,13 +324,13 @@ case_per_100k_plot <- covid_data_group_by_sate_long %>%
 case_per_100k_plot
 ```
 
-<div class="figure">
+::: figure
 ![](fig/case_per_100k_vs_features.png)<!-- -->
 
 Figure 2. Plots of total COVID-19 cases per 100k v.s. other features
-</p>
 
-</div>
+</p>
+:::
 
 ### Visualization 3 - relationships between average COVID-19 cases growth rate for each state and other features
 
@@ -352,24 +358,20 @@ covid_growth_rate_plot <- covid_data_group_by_sate_long %>%
 covid_growth_rate_plot
 ```
 
-<div class="figure">
+::: figure
 ![](fig/growth_rate_vs_features.png)<!-- -->
 
 Figure 3. Plots of average COVID-19 growth rate v.s. other features
-</p>
 
-</div>
+</p>
+:::
 
 ## References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
-
-<div id="ref-davis_2020" class="csl-entry">
-
-Davis, John. 2020. “US Social Determinants of Health by County.”
+::: {#refs .references .csl-bib-body .hanging-indent}
+::: {#ref-davis_2020 .csl-entry}
+Davis, John. 2020. "US Social Determinants of Health by County."
 *Kaggle*.
 <https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data>.
-
-</div>
-
-</div>
+:::
+:::
