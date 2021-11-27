@@ -13,9 +13,10 @@ Rscript src/get_kaggle_data.R --url=https://www.kaggle.com/johnjdavisiv/us-count
 Rscript src/data_wrangling.r --input=data/raw/US_counties_COVID19_health_weather_data.csv --output=data/processed
 
 # EDA
+Rscript src/eda_covid_socioeconomics.r --in_file=data/processed/cleaned_data.csv --out_dir=results
 
 # Perform data analysis
 Rscript src/analyse_socioeconomic_features.R --in_file=data/processed/cleaned_data.csv --out_dir=results
 
 # Render report
-# Rscript -e "rmarkdown::render('<EDA-FILE>')"
+Rscript -e "rmarkdown::render('doc/covid_socioeconomic_report.Rmd')"
