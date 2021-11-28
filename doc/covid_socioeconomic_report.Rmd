@@ -1,21 +1,26 @@
 ---
 title: "Report for US social determinants of health by county dataset"
-author: "Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25)"
-date: "11/27/2021"
-bibliography: references.bib
-output:
-  html_document
+author: "Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25) </br>"
+date: "2021/11/27"
+always_allow_html: true
+output: 
+  html_document:
+    toc: true
+  github_document:
+    toc: true
+bibliography: covid_socioeconomic_refs.bib
 ---
 
-
-## Setup
+# Setup
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
+library(knitr)
+library(docopt)
 library(tidyverse)
 library(plotly)
 library(broom)
-library(knitr)
+library(testthat)
 library(here)
 ```
 
@@ -33,63 +38,35 @@ highest_covid_growths_state <- readRDS(here("results", "highest_covid_growths_st
 lowest_covid_growths_state <- readRDS(here("results", "lowest_covid_growths_state.rds"))
 ```
 
-Our GitHub Repo:
-[**https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county**](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county){.uri}
+Our GitHub Repo: <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county></strong></a>
 
-## Introduction
+# Summary
+
+Here we attempt to build a Multiple linear regression model which can use to quantify the influence of potential factors on the COVID-19 prevalence(measured by cases per 100k population) among all the US counties. Our final regression model suggests that the percentage of smokers, teenage birth rate and chlamydia rate are the three features most strongly associated with COVID-19 prevalence. However, the intercept term is the one with the largest value. This means there are other unobserved factors weighted significantly in explaining the COVID-19 prevalence, thus we should continue the study to find and include those potential factors from 200 variables in the original dataset to improve the explanation of COVID-19 prevalence.
+
+# Introduction
+
+The original data set contained over 200 features with a high degree of granularity to support different exploratory questions. We identified a subset of these features whose relationship to COVID-19 prevalence we believed to be of interest to the general population based on intuition and validated by a media scan. We also added a few "wildcard" features ("chlamydia" and "teen birth rate") which might be related to broader social determinants of public health. In the future, we might choose to add additional features as they are requested by the community or become of interest to the team.
+
+In addition, our original data reported observations as a time series per county. However, due to limits in measurement and reporting, their was a varied rate of change for different features (e.g.COVID-19 cases were reported daily, whereas many other features were reported no more than once per month). As such, we believe it is most effective to summarize the data into static summary measures per county. In the processed data, we normalized the teen birth rate by per thousand females, and all other rates are by per 100k people.
+
+Each row in the processed data set contains normalized COVID-19 related features and other normalized demographic statistics for each county. There are 1621 observations in the data set, and 18 features. There are 0 observations with missing values in the data set. Below we show the descriptive statistics of the dataset.
+
+# Methods
 
 ## Data
 
-The original data set used in this project is of US social determinants
-of health by county created by Dr. John Davis at Indiana University, the
-United States. Each row in the original data set represents a day with its corresponding
-COVID-19 cases (accumulated), number of deaths due to COVID-19
-(accumulated), and other demographic statistics.
+The original data set used in this project is of US social determinants of health by county created by Dr. John Davis at Indiana University, the United States. Each row in the original data set represents a day with its corresponding COVID-19 cases (accumulated), number of deaths due to COVID-19 (accumulated), and other demographic statistics.
 
+## Analysis
 
-## Methods
+The Multiple linear regression was used to quantify the influence of potential factors we chosen on the COVID-19 prevalence(measured by cases per 100k population) among all the US counties. All variables included in the original data set, The R programming languages [@R] and the following R packages were used to perform the analysis:broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], here [@here]. The code used to perform the analysis and create this report can be found here: <https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county>.
 
-The original data set contained over 200
-features with a high degree of granularity to support different
-exploratory questions. We identified a subset of these features whose
-relationship to COVID-19 prevalence we believed to be of interest to the
-general population based on intuition and validated by a media scan. We
-also added a few "wildcard" features ("chlamydia" and "teen birth rate")
-which might be related to broader social determinants of public health.
-In the future, we might choose to add additional features as they are
-requested by the community or become of interest to the team.
-
-In addition, our original data reported observations as a time series per county. However, due to limits in measurement and reporting, their was a varied rate of change for different features (e.g. COVID-19 cases were reported daily, whereas many other features were reported no more than once per month). As such, we believe it is most effective to summarize the data into static summary measures per county. In the processed data, we normalized the teen birth rate by per thousand females, and all other rates are by per 100k people. 
-
-Each row in the processed data set contains normalized COVID-19 related features and other normalized demographic statistics for each county. There are 1621 observations in the data set, and 18 features. There are 0 observations with
-missing values in the data set. Below we show the descriptive statistics
-of the dataset. 
-
-
-## Results
-
-Here we demonstrated
-
--   the internal structure of the dataset;
--   summary data related to the individual features;
--   the top of the dataset;
--   the bottom of the dataset; and
--   the number of unique values in each feature.
-
-```{r check the descriptive stats of the data frame}
-kable(head_data, caption = "Table 1. First few rows data set")
-kable(tail_data, caption = "Table 2. Last few rows of data set")
-kable(summary_data, caption = "Table 3. Summary statistics of data set")
-kable(unique_vals, caption = "Table 4. Number of unique values for each column in data set")
-```
-
-
+# Results & Discussion
 
 ## Exploratory Data Analysis (EDA)
 
-To look at whether each of the features might be useful to determine the change of COVID-19 cases, we first created two summary tables to check COVID-19 prevalence for each state and for each county. 
-
-
+To look at whether each of the features might be useful to determine the change of COVID-19 cases, we first created two summary tables to check COVID-19 prevalence for each state and for each county.
 
 ### Table of COVID-19 prevalence for every county
 
@@ -105,10 +82,9 @@ kable(highest_covid_growths_state, caption = "Table 7. Top 5 states with highest
 kable(lowest_covid_growths_state, caption = "Table 8. Top 5 states with lowest maximum number of COVID-19 cases.")
 ```
 
-
 ### Visualization 1 - distributions of numeric features
 
-Then we created density plots for all numeric variables to check the distributions.
+Then we created density plots for all numeric variables to check the distributions. From the density plots, we can see a right skew for many variables.
 
 ```{r density plots for numeric variables, warning=FALSE, fig.cap="Figure 1. Density plots of numeric feature", out.width="100%"}
 knitr::include_graphics(here("results", "numeric_feats_dist.png"))
@@ -116,7 +92,7 @@ knitr::include_graphics(here("results", "numeric_feats_dist.png"))
 
 ### Visualization 2 - relationships between total COVID-19 cases per 100k of each state and other features
 
-In addition, we created plots to demonstrate relationshipts between COVID-19 cases per 100k of each state and other features in the dataset.
+In addition, we created plots to demonstrate relationshipts between COVID-19 cases per 100k of each state and other features in the dataset. We can observe linear relationships between income ratio, percent_fair_poor_health, and percent_smokers with cases per 100k. Although all of the relationships are not strong.
 
 ```{r cases per 100k vs other features, warning=FALSE, fig.cap="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features", out.width="100%"}
 knitr::include_graphics(here("results", "cases_per_100k.png"))
@@ -124,12 +100,13 @@ knitr::include_graphics(here("results", "cases_per_100k.png"))
 
 ### Visualization 3 - relationships between average COVID-19 cases growth rate for each state and other features
 
-We also created plots to demonstrate relationshipts between average COVID-19 cases growth rate of each state and other features in the dataset.
-
+We also created plots to demonstrate relationshipts between average COVID-19 cases growth rate of each state and other features in the dataset.We can see that there is no clear relationships for COVID-19 growth rate.
 
 ```{r growth rate vs other features, warning=FALSE, fig.cap="Figure 3. Plots of average COVID-19 growth rate v.s. other features", out.width="100%"}
 knitr::include_graphics(here("results", "growth_rate.png"))
 ```
+
+## Data Analysis(Modeling)
 
 The results of data analysis:
 
@@ -137,8 +114,12 @@ The results of data analysis:
 kable(mlr_model, caption = "Table 9. Coefficients of each feature of the multiple linear regression model.")
 ```
 
+### Visualization 4 - Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.
+
 ```{r model coefs figure, warning=FALSE, fig.cap="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.", out.width="100%"}
 knitr::include_graphics(here("results", "feature_coefs.png"))
 ```
+
+The multiple linear regression result reveals that only three features and the intercept term are statistically significant on 5% significant level. After normalizing all features, the value of the intercept term is larger than the sum of the absolute coefficient of all other significant features. This means our current model has low explanatory power on the responsive variable COVID-19 cases, which enables the intercept term to capture most of the changes. To further improve this model in future with hopes of finding the essential influence factors of COVID-19 prevalence, we need to improve our feature selecting process by using methods like PCA model and incorporating advanced feature engineering techniques.
 
 ## References
