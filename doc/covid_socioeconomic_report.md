@@ -1,92 +1,111 @@
----
-title: "Report for US social determinants of health by county dataset"
-author: "Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25) </br>"
-date: "2021/11/27"
-always_allow_html: true
-output: 
-  html_document:
-    toc: true
-  github_document:
-    toc: true
-bibliography: covid_socioeconomic_refs.bib
----
+Report for US social determinants of health by county dataset
+================
+Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25) </br>
+2021/11/27
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-library(knitr)
-library(docopt)
-library(tidyverse)
-library(plotly)
-library(broom)
-library(testthat)
-library(here)
-```
+-   [Setup](#setup)
+-   [Summary](#summary)
+-   [Introduction](#introduction)
+-   [Methods](#methods)
+    -   [Data](#data)
+    -   [Analysis](#analysis)
+-   [Results & Discussion](#results--discussion)
+    -   [Exploratory Data Analysis
+        (EDA)](#exploratory-data-analysis-eda)
+        -   [Table of COVID-19 prevalence for every
+            county](#table-of-covid-19-prevalence-for-every-county)
+        -   [Table of COVID-19 prevalence for every
+            state](#table-of-covid-19-prevalence-for-every-state)
+        -   [Visualization 1 - distributions of numeric
+            features](#visualization-1---distributions-of-numeric-features)
+        -   [Visualization 2 - relationships between total COVID-19
+            cases per 100k of each state and other
+            features](#visualization-2---relationships-between-total-covid-19-cases-per-100k-of-each-state-and-other-features)
+        -   [Visualization 3 - relationships between average COVID-19
+            cases growth rate for each state and other
+            features](#visualization-3---relationships-between-average-covid-19-cases-growth-rate-for-each-state-and-other-features)
+    -   [Data Analysis(Modeling)](#data-analysismodeling)
+        -   [Visualization 4 - Coefficients of each feature of the
+            multiple linear regression model with 95% confidence
+            intervals.](#visualization-4---coefficients-of-each-feature-of-the-multiple-linear-regression-model-with-95-confidence-intervals)
+    -   [References](#references)
 
 # Setup
 
-Our GitHub Repo: <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county></strong></a>
+Our GitHub Repo:
+<a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county></strong></a>
 
 # Summary
 
-Here we attempt to build a Multiple linear regression model which can use to quantify the influence of potential factors on the Covid19 prevalence(measured by cases per 100k population) among all the US counties. Our final regression model indicates that the percentage of smokers and teenager birth rate and chlamydia rate are three features that highest positive relationship with Covid19 cases. However, the intercept term is the one with the largest value. This means there are other unobserved factors weighted significantly in explaining the Covid19 prevalence, thus we should continue the study to find and include those potential factors from 200 variables in the original dataset to improve the ​​interpretability of the amount of Covid19 cases.
+Here we attempt to build a Multiple linear regression model which can
+use to quantify the influence of potential factors on the COVID-19
+prevalence(measured by cases per 100k population) among all the US
+counties. Our final regression model suggests that the percentage of
+smokers, teenage birth rate and chlamydia rate are the three features
+most strongly associated with COVID-19 prevalence. However, the
+intercept term is the one with the largest value. This means there are
+other unobserved factors weighted significantly in explaining the
+COVID-19 prevalence, thus we should continue the study to find and
+include those potential factors from 200 variables in the original
+dataset to improve the explanation of COVID-19 prevalence.
 
 # Introduction
 
-The original data set contained over 200 features with a high degree of granularity to support different exploratory questions. We identified a subset of these features whose relationship to COVID-19 prevalence we believed to be of interest to the general population based on intuition and validated by a media scan. We also added a few "wildcard" features ("chlamydia" and "teen birth rate") which might be related to broader social determinants of public health. In the future, we might choose to add additional features as they are requested by the community or become of interest to the team.
+The original data set contained over 200 features with a high degree of
+granularity to support different exploratory questions. We identified a
+subset of these features whose relationship to COVID-19 prevalence we
+believed to be of interest to the general population based on intuition
+and validated by a media scan. We also added a few “wildcard” features
+(“chlamydia” and “teen birth rate”) which might be related to broader
+social determinants of public health. In the future, we might choose to
+add additional features as they are requested by the community or become
+of interest to the team.
 
-In addition, our original data reported observations as a time series per county. However, due to limits in measurement and reporting, their was a varied rate of change for different features (e.g. COVID-19 cases were reported daily, whereas many other features were reported no more than once per month). As such, we believe it is most effective to summarize the data into static summary measures per county. In the processed data, we normalized the teen birth rate by per thousand females, and all other rates are by per 100k people.
+In addition, our original data reported observations as a time series
+per county. However, due to limits in measurement and reporting, their
+was a varied rate of change for different features (e.g.COVID-19 cases
+were reported daily, whereas many other features were reported no more
+than once per month). As such, we believe it is most effective to
+summarize the data into static summary measures per county. In the
+processed data, we normalized the teen birth rate by per thousand
+females, and all other rates are by per 100k people.
 
-Each row in the processed data set contains normalized COVID-19 related features and other normalized demographic statistics for each county. There are 1621 observations in the data set, and 18 features. There are 0 observations with missing values in the data set. Below we show the descriptive statistics of the dataset.
+Each row in the processed data set contains normalized COVID-19 related
+features and other normalized demographic statistics for each county.
+There are 1621 observations in the data set, and 18 features. There are
+0 observations with missing values in the data set. Below we show the
+descriptive statistics of the dataset.
 
 # Methods
 
 ## Data
 
-The original data set used in this project is of US social determinants of health by county created by Dr. John Davis at Indiana University, the United States. Each row in the original data set represents a day with its corresponding COVID-19 cases (accumulated), number of deaths due to COVID-19 (accumulated), and other demographic statistics.
+The original data set used in this project is of US social determinants
+of health by county created by Dr. John Davis at Indiana University, the
+United States. Each row in the original data set represents a day with
+its corresponding COVID-19 cases (accumulated), number of deaths due to
+COVID-19 (accumulated), and other demographic statistics.
 
 ## Analysis
 
-The Multiple linear regression was used to quantify the influence of potential factors we chosen on the Covid19 prevalence(measured by cases per 100k population) among all the US counties. All variables included in the original data set, The R programming languages [@R] and the following R packages were used to perform the analysis:broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], here [@here]. The code used to perform the analysis and create this report can be found here: <https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county>.
+The Multiple linear regression was used to quantify the influence of
+potential factors we chosen on the COVID-19 prevalence(measured by cases
+per 100k population) among all the US counties. All variables included
+in the original data set, The R programming languages (R Core Team 2019)
+and the following R packages were used to perform the analysis:broom
+(Robinson, Hayes, and Couch 2021), docopt (de Jonge 2018), knitr (Xie
+2014), tidyverse (Wickham 2017), testhat(Wickham 2011), here (Müller
+2020). The code used to perform the analysis and create this report can
+be found here:
+<https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county>.
 
 # Results & Discussion
 
-Here we demonstrated
-
--   the internal structure of the dataset;
--   summary data related to the individual features;
--   the top of the dataset;
--   the bottom of the dataset; and
--   the number of unique values in each feature.
-
-Table 1. Summary statistics of data set
-
-|                             |    x |
-|:----------------------------|-----:|
-| county                      | 1621 |
-| state                       |   51 |
-| max_cases                   | 1434 |
-| avg_growth_rate             | 1621 |
-| max_growth_rate             |  399 |
-| total_population            | 1612 |
-| num_deaths                  | 1248 |
-| percent_smokers             | 1621 |
-| percent_vaccinated          |  414 |
-| income_ratio                | 1620 |
-| population_density_per_sqmi | 1621 |
-| percent_fair_or_poor_health | 1621 |
-| percent_unemployed_CHR      | 1620 |
-| violent_crime_rate          | 1620 |
-| chlamydia_rate              | 1510 |
-| teen_birth_rate             | 1618 |
-| total_cases                 | 1621 |
-| deaths_per_100k             | 1621 |
-| cases_per_100k              | 1621 |
-
-Table 2. Number of unique values for each column in data set
-
 ## Exploratory Data Analysis (EDA)
 
-To look at whether each of the features might be useful to determine the change of COVID-19 cases, we first created two summary tables to check COVID-19 prevalence for each state and for each county.
+To look at whether each of the features might be useful to determine the
+change of COVID-19 cases, we first created two summary tables to check
+COVID-19 prevalence for each state and for each county.
 
 ### Table of COVID-19 prevalence for every county
 
@@ -99,7 +118,7 @@ To look at whether each of the features might be useful to determine the change 
 | Maricopa      | Arizona    |    224924 |       5501.316 |       0.0347391 |       0.5000000 |
 | Harris        | Texas      |    195558 |       8472.749 |     -66.2769127 |       0.9964581 |
 
-Table 3. Top 5 counties with highest COVID-19 growth rate.
+Table 5. Top 5 counties with highest maximum number of COVID-19 cases.
 
 |      | county      | state    | max_cases | cases_per_100k | avg_growth_rate | max_growth_rate |
 |:-----|:------------|:---------|----------:|---------------:|----------------:|----------------:|
@@ -110,7 +129,7 @@ Table 3. Top 5 counties with highest COVID-19 growth rate.
 | 1620 | Piscataquis | Maine    |        57 |       334.4285 |       0.0134190 |       0.5000000 |
 | 1621 | Grand Isle  | Vermont  |        46 |       662.3470 |       0.0132021 |       0.6666667 |
 
-Table 4. Top 5 counties with lowest COVID-19 growth rate.
+Table 6. Top 5 counties with lowest maximum number of COVID-19 cases
 
 ### Table of COVID-19 prevalence for every state
 
@@ -123,7 +142,7 @@ Table 4. Top 5 counties with lowest COVID-19 growth rate.
 | New York   |    586878 |       113808.1 |      -5.7251701 |       0.7163069 |
 | Georgia    |    452834 |       743968.0 |      -2.2504604 |       0.7116388 |
 
-Table 5. Top 5 states with highest COVID-19 growth rate.
+Table 7. Top 5 states with highest maximum number of COVID-19 cases.
 
 |     | state                | max_cases | cases_per_100k | avg_growth_rate | max_growth_rate |
 |:----|:---------------------|----------:|---------------:|----------------:|----------------:|
@@ -134,32 +153,37 @@ Table 5. Top 5 states with highest COVID-19 growth rate.
 | 50  | New Hampshire        |     12374 |      10509.595 |      -0.6624274 |       0.6426744 |
 | 51  | Vermont              |      3256 |       5541.161 |       0.0169872 |       0.5543210 |
 
-Table 6. Top 5 states with lowest COVID-19 growth rate.
+Table 8. Top 5 states with lowest maximum number of COVID-19 cases.
 
 ### Visualization 1 - distributions of numeric features
 
-Then we created density plots for all numeric variables to check the distributions.
+Then we created density plots for all numeric variables to check the
+distributions. From the density plots, we can see a right skew for many
+variables.
 
-```{r predictor-distributions, echo=FALSE, fig.cap="Figure 1. Density plots of numeric feature" alt="Figure 1. Density plots of numeric feature", out.width='100%'}
-knitr::include_graphics("../results/numeric_feats_dist.png")
-```
+<img src="/Users/josh/DSCI_522_US_social_determinants_of_health_by_county/results/numeric_feats_dist.png" title="Figure 1. Density plots of numeric feature" alt="Figure 1. Density plots of numeric feature" width="100%" />
 
 ### Visualization 2 - relationships between total COVID-19 cases per 100k of each state and other features
 
-In addition, we created plots to demonstrate relationshipts between COVID-19 cases per 100k of each state and other features in the dataset.
+In addition, we created plots to demonstrate relationshipts between
+COVID-19 cases per 100k of each state and other features in the dataset.
+We can observe linear relationships between income ratio,
+percent_fair_poor_health, and percent_smokers with cases per 100k.
+Although all of the relationships are not strong.
 
-```{r predictor-distributions, echo=FALSE, fig.cap="Figure 2. Scatter plots of total COVID-19 cases per 100k v.s. other features", out.width='100%'}
-knitr::include_graphics("../results/cases_per_100k.png")
-```
+<img src="/Users/josh/DSCI_522_US_social_determinants_of_health_by_county/results/cases_per_100k.png" title="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features" alt="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features" width="100%" />
 
 ### Visualization 3 - relationships between average COVID-19 cases growth rate for each state and other features
 
-We also created plots to demonstrate relationshipts between average COVID-19 cases growth rate of each state and other features in the dataset.
+We also created plots to demonstrate relationshipts between average
+COVID-19 cases growth rate of each state and other features in the
+dataset.We can see that there is no clear relationships for COVID-19
+growth rate.
 
-```{r predictor-distributions, echo=FALSE, fig.cap="Figure 3. Scatter plots of average COVID-19 growth rate v.s. other features", out.width='100%'}
-knitr::include_graphics("../results/growth_rate.png")
-```
+<img src="/Users/josh/DSCI_522_US_social_determinants_of_health_by_county/results/growth_rate.png" title="Figure 3. Plots of average COVID-19 growth rate v.s. other features" alt="Figure 3. Plots of average COVID-19 growth rate v.s. other features" width="100%" />
+
 ## Data Analysis(Modeling)
+
 The results of data analysis:
 
 | term                        |   estimate |  conf.low |  conf.high |   p.value | is_sig |
@@ -175,14 +199,81 @@ The results of data analysis:
 | percent_fair_or_poor_health | -205.36215 | -656.1671 |  245.44281 | 0.3717101 | FALSE  |
 | percent_unemployed_CHR      | -731.93358 | -996.1554 | -467.71180 | 0.0000001 | TRUE   |
 
-Table 7. Coefficients of each feature of the multiple linear regression model.
+Table 9. Coefficients of each feature of the multiple linear regression
+model.
 
 ### Visualization 4 - Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.
 
-```{r predictor-distributions, echo=FALSE, fig.cap="Figure 4. Coefficients bar chart of the multiple linear regression model with 95% confidence intervals", out.width='100%'}
-knitr::include_graphics("../results/feature_coefs.png")
-```
-The multiple linear regression result reveals that only three features and the intercept term are statistically significant on 5% significant level. After normalizing all features, the value of the intercept term is larger than the sum of the absolute coefficient of all other significant features. This means our current model has low explanatory power on the responsive variable covid19 cases, which enables the intercept term to capture most of the changes. 
-To further improve this model in future with hopes of finding the essential influence factors of covid19 prevalence, we need to improve our feature selecting process by using methods like PCA model and incorporating advanced feature engineering techniques.
+<img src="/Users/josh/DSCI_522_US_social_determinants_of_health_by_county/results/feature_coefs.png" title="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals." alt="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals." width="100%" />
+
+The multiple linear regression result reveals that only three features
+and the intercept term are statistically significant on 5% significant
+level. After normalizing all features, the value of the intercept term
+is larger than the sum of the absolute coefficient of all other
+significant features. This means our current model has low explanatory
+power on the responsive variable COVID-19 cases, which enables the
+intercept term to capture most of the changes. To further improve this
+model in future with hopes of finding the essential influence factors of
+COVID-19 prevalence, we need to improve our feature selecting process by
+using methods like PCA model and incorporating advanced feature
+engineering techniques.
 
 ## References
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-docopt" class="csl-entry">
+
+de Jonge, Edwin. 2018. *Docopt: Command-Line Interface Specification
+Language*. <https://CRAN.R-project.org/package=docopt>.
+
+</div>
+
+<div id="ref-here" class="csl-entry">
+
+Müller, Kirill. 2020. *Here: A Simpler Way to Find Your Files*.
+<https://CRAN.R-project.org/package=here>.
+
+</div>
+
+<div id="ref-R" class="csl-entry">
+
+R Core Team. 2019. *R: A Language and Environment for Statistical
+Computing*. Vienna, Austria: R Foundation for Statistical Computing.
+<https://www.R-project.org/>.
+
+</div>
+
+<div id="ref-broom" class="csl-entry">
+
+Robinson, David, Alex Hayes, and Simon Couch. 2021. *Broom: Convert
+Statistical Objects into Tidy Tibbles*.
+<https://CRAN.R-project.org/package=broom>.
+
+</div>
+
+<div id="ref-testhat" class="csl-entry">
+
+Wickham, Hadley. 2011. “Testthat: Get Started with Testing.” *The R
+Journal* 3: 5–10.
+<https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf>.
+
+</div>
+
+<div id="ref-tidyverse" class="csl-entry">
+
+———. 2017. *Tidyverse: Easily Install and Load the ’Tidyverse’*.
+<https://CRAN.R-project.org/package=tidyverse>.
+
+</div>
+
+<div id="ref-knitr" class="csl-entry">
+
+Xie, Yihui. 2014. “Knitr: A Comprehensive Tool for Reproducible Research
+in R.” In *Implementing Reproducible Computational Research*, edited by
+Victoria Stodden, Friedrich Leisch, and Roger D. Peng. Chapman;
+Hall/CRC. <http://www.crcpress.com/product/isbn/9781466561595>.
+
+</div>
+
+</div>
