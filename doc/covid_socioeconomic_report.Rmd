@@ -94,15 +94,15 @@ To look at whether each of the features might be useful to determine the change 
 ### Table of COVID-19 prevalence for every county
 
 ```{r table of covid prevalence for each county, message=FALSE}
-kable(highest_covid_growths, caption = "Table 5. Top 5 counties with highest COVID-19 growth rate.")
-kable(lowest_covid_growths, caption = "Table 6. Top 5 counties with lowest COVID-19 growth rate.")
+kable(highest_covid_growths, caption = "Table 5. Top 5 counties with highest maximum number of COVID-19 cases.")
+kable(lowest_covid_growths, caption = "Table 6. Top 5 counties with lowest maximum number of COVID-19 cases")
 ```
 
 ### Table of COVID-19 prevalence for every state
 
 ```{r table of covid prevalence for each state, message=FALSE}
-kable(highest_covid_growths_state, caption = "Table 7. Top 5 states with highest COVID-19 growth rate.")
-kable(lowest_covid_growths_state, caption = "Table 8. Top 5 states with lowest COVID-19 growth rate.")
+kable(highest_covid_growths_state, caption = "Table 7. Top 5 states with highest maximum number of COVID-19 cases.")
+kable(lowest_covid_growths_state, caption = "Table 8. Top 5 states with lowest maximum number of COVID-19 cases.")
 ```
 
 
