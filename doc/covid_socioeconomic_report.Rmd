@@ -42,7 +42,7 @@ Our GitHub Repo: <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determin
 
 # Summary
 
-Here we attempt to build a Multiple linear regression model which can use to quantify the influence of potential factors on the COVID-19 prevalence(measured by cases per 100k population) among all the US counties. Our final regression model suggests that the percentage of smokers, teenage birth rate and chlamydia rate are the three features most strongly associated with COVID-19 prevalence. However, the intercept term is the one with the largest value. This means there are other unobserved factors weighted significantly in explaining the COVID-19 prevalence, thus we should continue the study to find and include those potential factors from 200 variables in the original dataset to improve the explanation of COVID-19 prevalence.
+Here we attempt to build a Multiple Linear Regression model which can use to quantify the influence of potential factors on the COVID-19 prevalence (measured by cases per 100k population) among all the US counties. Our final regression model suggests that the percentage of smokers, teenage birth rate and chlamydia rate are the three features most strongly associated with COVID-19 prevalence. However, the intercept term is the one with the largest value. This means there are other unobserved factors weighted significantly in explaining the COVID-19 prevalence, thus we should continue the study to find and include those potential factors from 200 variables in the original dataset to improve the explanation of COVID-19 prevalence.
 
 # Introduction
 
@@ -60,7 +60,7 @@ The original data set used in this project is of US social determinants of healt
 
 ## Analysis
 
-The Multiple linear regression was used to quantify the influence of potential factors we chosen on the COVID-19 prevalence(measured by cases per 100k population) among all the US counties. All variables included in the original data set, The R programming languages [@R] and the following R packages were used to perform the analysis:broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], here [@here]. The code used to perform the analysis and create this report can be found here: <https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county>.
+The Multiple Linear Regression was used to quantify the influence of potential factors we chosen on the COVID-19 prevalence (measured by cases per 100k population) among all the US counties. All variables included in the original data set, The R programming languages [\@R] and the following R packages were used to perform the analysis:broom [\@broom], docopt [\@docopt], knitr [\@knitr], tidyverse [\@tidyverse], testhat[\@testhat], here [\@here]. The code used to perform the analysis and create this report can be found here: <https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county>.
 
 # Results & Discussion
 
@@ -92,7 +92,7 @@ knitr::include_graphics(here("results", "numeric_feats_dist.png"))
 
 ### Visualization 2 - relationships between total COVID-19 cases per 100k of each state and other features
 
-In addition, we created plots to demonstrate relationshipts between COVID-19 cases per 100k of each state and other features in the dataset. We can observe linear relationships between income ratio, percent_fair_poor_health, and percent_smokers with cases per 100k. Although all of the relationships are not strong.
+In addition, we created plots to demonstrate relationships between COVID-19 cases per 100k of each state and other features in the dataset. We can observe linear relationships between income ratio, percent_fair_poor_health, and percent_smokers with cases per 100k. Although all of the relationships are not strong.
 
 ```{r cases per 100k vs other features, warning=FALSE, fig.cap="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features", out.width="100%"}
 knitr::include_graphics(here("results", "cases_per_100k.png"))
@@ -100,13 +100,13 @@ knitr::include_graphics(here("results", "cases_per_100k.png"))
 
 ### Visualization 3 - relationships between average COVID-19 cases growth rate for each state and other features
 
-We also created plots to demonstrate relationshipts between average COVID-19 cases growth rate of each state and other features in the dataset.We can see that there is no clear relationships for COVID-19 growth rate.
+We also created plots to demonstrate relationships between average COVID-19 cases growth rate of each state and other features in the dataset. We can see that there is no clear relationships for COVID-19 growth rate.
 
 ```{r growth rate vs other features, warning=FALSE, fig.cap="Figure 3. Plots of average COVID-19 growth rate v.s. other features", out.width="100%"}
 knitr::include_graphics(here("results", "growth_rate.png"))
 ```
 
-## Data Analysis(Modeling)
+## Data Analysis (Modeling)
 
 The results of data analysis:
 
