@@ -22,7 +22,7 @@ Here we attempt to build a Multiple linear regression model which can use to qua
 
 ## **Report**
 
-The final report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.md). The final report can also be downloaded as a html file [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.html). A preview of the final report as a html file can be viewed [here](https://htmlpreview.github.io/?https://github.com/joshsia/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.html).
+The final report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.md). The final report can also be downloaded as a html file [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county/blob/main/doc/covid_socioeconomic_report.html). A preview of the final report as a html file can be viewed [here](https://ubc-mds.github.io/DSCI_522_US_social_determinants_of_health_by_county/doc/covid_socioeconomic_report.html).
 
 ## Usage
 
