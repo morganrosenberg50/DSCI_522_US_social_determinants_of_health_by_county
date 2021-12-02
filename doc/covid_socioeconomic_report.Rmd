@@ -6,8 +6,10 @@ always_allow_html: true
 output: 
   html_document:
     toc: true
+    toc_depth: 2
   github_document:
     toc: true
+    toc_depth: 2
 bibliography: covid_socioeconomic_refs.bib
 ---
 
@@ -55,7 +57,7 @@ Each row in the processed data set contains normalized COVID-19 related features
 
 ## Data
 
-The original data set used in this project is of US social determinants of health by county created by Dr. John Davis at Indiana University, the United States. Each row in the original data set represents a day with its corresponding COVID-19 cases (accumulated), number of deaths due to COVID-19 (accumulated), and other demographic statistics.
+The original data set used in this project is of US social determinants of health by county created by Dr. John Davis at Indiana University, the United States. Each row in the original data set represents a day with its corresponding COVID-19 cases (accumulated), number of deaths due to COVID-19 (accumulated), and other demographic statistics.
 
 ## Analysis
 
@@ -86,7 +88,7 @@ kable(lowest_covid_growths_state, caption = "Table 8. Top 5 states with lowest m
 Then we created density plots for all numeric variables to check the distributions. From the density plots, we can see a right skew for many variables.
 
 ```{r density plots for numeric variables, warning=FALSE, fig.cap="Figure 1. Density plots of numeric feature", out.width="100%"}
-knitr::include_graphics(here("results", "numeric_feats_dist.png"))
+knitr::include_graphics("../results/numeric_feats_dist.png")
 ```
 
 ### Visualization 2 - relationships between total COVID-19 cases per 100k of each state and other features
@@ -94,7 +96,7 @@ knitr::include_graphics(here("results", "numeric_feats_dist.png"))
 In addition, we created plots to demonstrate relationships between COVID-19 cases per 100k of each state and other features in the dataset. We can observe linear relationships between income ratio, percent_fair_poor_health, and percent_smokers with cases per 100k. Although all of the relationships are not strong.
 
 ```{r cases per 100k vs other features, warning=FALSE, fig.cap="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features", out.width="100%"}
-knitr::include_graphics(here("results", "cases_per_100k.png"))
+knitr::include_graphics("../results/cases_per_100k.png")
 ```
 
 ### Visualization 3 - relationships between average COVID-19 cases growth rate for each state and other features
@@ -102,7 +104,7 @@ knitr::include_graphics(here("results", "cases_per_100k.png"))
 We also created plots to demonstrate relationships between average COVID-19 cases growth rate of each state and other features in the dataset. We can see that there is no clear relationships for COVID-19 growth rate.
 
 ```{r growth rate vs other features, warning=FALSE, fig.cap="Figure 3. Plots of average COVID-19 growth rate v.s. other features", out.width="100%"}
-knitr::include_graphics(here("results", "growth_rate.png"))
+knitr::include_graphics("../results/growth_rate.png")
 ```
 
 ## Data Analysis (Modeling)
@@ -116,7 +118,7 @@ kable(mlr_model, caption = "Table 9. Coefficients of each feature of the multipl
 ### Visualization 4 - Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.
 
 ```{r model coefs figure, warning=FALSE, fig.cap="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.", out.width="100%"}
-knitr::include_graphics(here("results", "feature_coefs.png"))
+knitr::include_graphics("../results/feature_coefs.png")
 ```
 
 The multiple linear regression result reveals that only three features and the intercept term are statistically significant on 5% significant level. After normalizing all features, the value of the intercept term is larger than the sum of the absolute coefficient of all other significant features. This means our current model has low explanatory power on the responsive variable COVID-19 cases, which enables the intercept term to capture most of the changes. To further improve this model in future with hopes of finding the essential influence factors of COVID-19 prevalence, we need to improve our feature selecting process by using methods like PCA model and incorporating advanced feature engineering techniques.
