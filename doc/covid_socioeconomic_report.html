@@ -57,6 +57,28 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
 
 
 
@@ -172,7 +194,6 @@ pre code {
 
 <div id="TOC">
 <ul>
-<li><a href="#setup">Setup</a></li>
 <li><a href="#summary">Summary</a></li>
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#methods">Methods</a>
@@ -184,15 +205,12 @@ pre code {
 <ul>
 <li><a href="#exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</a></li>
 <li><a href="#data-analysis-modeling">Data Analysis (Modeling)</a></li>
-<li><a href="#references">References</a></li>
 </ul></li>
+<li><a href="#references">References</a></li>
 </ul>
 </div>
 
-<div id="setup" class="section level1">
-<h1>Setup</h1>
-<p>Our GitHub Repo: <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri">https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county</a></strong></a></p>
-</div>
+<p>GitHub repository: <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri">https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county</a></strong></a></p>
 <div id="summary" class="section level1">
 <h1>Summary</h1>
 <p>Here we attempt to build a Multiple Linear Regression model which can use to quantify the influence of potential factors on the COVID-19 prevalence (measured by cases per 100k population) among all the US counties. Our final regression model suggests that the percentage of smokers, teenage birth rate and chlamydia rate are the three features most strongly associated with COVID-19 prevalence. However, the intercept term is the one with the largest value. This means there are other unobserved factors weighted significantly in explaining the COVID-19 prevalence, thus we should continue the study to find and include those potential factors from 200 variables in the original dataset to improve the explanation of COVID-19 prevalence.</p>
@@ -211,7 +229,7 @@ pre code {
 </div>
 <div id="analysis" class="section level2">
 <h2>Analysis</h2>
-<p>The Multiple Linear Regression was used to quantify the influence of potential factors we chosen on the COVID-19 prevalence (measured by cases per 100k population) among all the US counties. All variables included in the original data set, The R programming languages [@R] and the following R packages were used to perform the analysis:broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], here [@here]. The code used to perform the analysis and create this report can be found here: <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri">https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county</a>.</p>
+<p>The Multiple Linear Regression was used to quantify the influence of potential factors we chosen on the COVID-19 prevalence (measured by cases per 100k population) among all the US counties. All variables included in the original data set, The R programming languages <span class="citation">(R Core Team 2019)</span> and the following R packages were used to perform the analysis:broom <span class="citation">(Robinson, Hayes, and Couch 2021)</span>, docopt <span class="citation">(de Jonge 2018)</span>, knitr <span class="citation">(Xie 2014)</span>, tidyverse <span class="citation">(Wickham 2017)</span>, testhat<span class="citation">(Wickham 2011)</span>, here <span class="citation">(Müller 2020)</span>. The code used to perform the analysis and create this report can be found here: <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri">https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county</a>.</p>
 </div>
 </div>
 <div id="results-discussion" class="section level1">
@@ -617,8 +635,31 @@ Figure 4. Coefficients of each feature of the multiple linear regression model w
 <p>The multiple linear regression result reveals that only three features and the intercept term are statistically significant on 5% significant level. After normalizing all features, the value of the intercept term is larger than the sum of the absolute coefficient of all other significant features. This means our current model has low explanatory power on the responsive variable COVID-19 cases, which enables the intercept term to capture most of the changes. To further improve this model in future with hopes of finding the essential influence factors of COVID-19 prevalence, we need to improve our feature selecting process by using methods like PCA model and incorporating advanced feature engineering techniques.</p>
 </div>
 </div>
-<div id="references" class="section level2">
-<h2>References</h2>
+</div>
+<div id="references" class="section level1 unnumbered">
+<h1 class="unnumbered">References</h1>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-docopt" class="csl-entry">
+de Jonge, Edwin. 2018. <em>Docopt: Command-Line Interface Specification Language</em>. <a href="https://CRAN.R-project.org/package=docopt">https://CRAN.R-project.org/package=docopt</a>.
+</div>
+<div id="ref-here" class="csl-entry">
+Müller, Kirill. 2020. <em>Here: A Simpler Way to Find Your Files</em>. <a href="https://CRAN.R-project.org/package=here">https://CRAN.R-project.org/package=here</a>.
+</div>
+<div id="ref-R" class="csl-entry">
+R Core Team. 2019. <em>R: A Language and Environment for Statistical Computing</em>. Vienna, Austria: R Foundation for Statistical Computing. <a href="https://www.R-project.org/">https://www.R-project.org/</a>.
+</div>
+<div id="ref-broom" class="csl-entry">
+Robinson, David, Alex Hayes, and Simon Couch. 2021. <em>Broom: Convert Statistical Objects into Tidy Tibbles</em>. <a href="https://CRAN.R-project.org/package=broom">https://CRAN.R-project.org/package=broom</a>.
+</div>
+<div id="ref-testhat" class="csl-entry">
+Wickham, Hadley. 2011. <span>“Testthat: Get Started with Testing.”</span> <em>The R Journal</em> 3: 5–10. <a href="https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf">https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf</a>.
+</div>
+<div id="ref-tidyverse" class="csl-entry">
+———. 2017. <em>Tidyverse: Easily Install and Load the ’Tidyverse’</em>. <a href="https://CRAN.R-project.org/package=tidyverse">https://CRAN.R-project.org/package=tidyverse</a>.
+</div>
+<div id="ref-knitr" class="csl-entry">
+Xie, Yihui. 2014. <span>“Knitr: A Comprehensive Tool for Reproducible Research in <span>R</span>.”</span> In <em>Implementing Reproducible Computational Research</em>, edited by Victoria Stodden, Friedrich Leisch, and Roger D. Peng. Chapman; Hall/CRC. <a href="http://www.crcpress.com/product/isbn/9781466561595">http://www.crcpress.com/product/isbn/9781466561595</a>.
+</div>
 </div>
 </div>
 

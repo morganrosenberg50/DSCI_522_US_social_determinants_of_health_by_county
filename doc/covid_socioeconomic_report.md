@@ -3,7 +3,6 @@ Report for US social determinants of health by county dataset
 Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25) </br>
 2021/11/27
 
--   [Setup](#setup)
 -   [Summary](#summary)
 -   [Introduction](#introduction)
 -   [Methods](#methods)
@@ -12,12 +11,25 @@ Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25) </br>
 -   [Results & Discussion](#results--discussion)
     -   [Exploratory Data Analysis
         (EDA)](#exploratory-data-analysis-eda)
+        -   [Table of COVID-19 prevalence for every
+            county](#table-of-covid-19-prevalence-for-every-county)
+        -   [Table of COVID-19 prevalence for every
+            state](#table-of-covid-19-prevalence-for-every-state)
+        -   [Visualization 1 - distributions of numeric
+            features](#visualization-1---distributions-of-numeric-features)
+        -   [Visualization 2 - relationships between total COVID-19
+            cases per 100k of each state and other
+            features](#visualization-2---relationships-between-total-covid-19-cases-per-100k-of-each-state-and-other-features)
+        -   [Visualization 3 - relationships between average COVID-19
+            cases growth rate for each state and other
+            features](#visualization-3---relationships-between-average-covid-19-cases-growth-rate-for-each-state-and-other-features)
     -   [Data Analysis (Modeling)](#data-analysis-modeling)
-    -   [References](#references)
+        -   [Visualization 4 - Coefficients of each feature of the
+            multiple linear regression model with 95% confidence
+            intervals.](#visualization-4---coefficients-of-each-feature-of-the-multiple-linear-regression-model-with-95-confidence-intervals)
+-   [References](#references)
 
-# Setup
-
-Our GitHub Repo:
+GitHub repository:
 <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county></strong></a>
 
 # Summary
@@ -76,11 +88,12 @@ COVID-19 (accumulated), and other demographic statistics.
 The Multiple Linear Regression was used to quantify the influence of
 potential factors we chosen on the COVID-19 prevalence (measured by
 cases per 100k population) among all the US counties. All variables
-included in the original data set, The R programming languages \[@R\]
-and the following R packages were used to perform the analysis:broom
-\[@broom\], docopt \[@docopt\], knitr \[@knitr\], tidyverse
-\[@tidyverse\], testhat\[@testhat\], here \[@here\]. The code used to
-perform the analysis and create this report can be found here:
+included in the original data set, The R programming languages (R Core
+Team 2019) and the following R packages were used to perform the
+analysis:broom (Robinson, Hayes, and Couch 2021), docopt (de Jonge
+2018), knitr (Xie 2014), tidyverse (Wickham 2017), testhat(Wickham
+2011), here (Müller 2020). The code used to perform the analysis and
+create this report can be found here:
 <https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county>.
 
 # Results & Discussion
@@ -202,4 +215,62 @@ COVID-19 prevalence, we need to improve our feature selecting process by
 using methods like PCA model and incorporating advanced feature
 engineering techniques.
 
-## References
+# References
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+
+<div id="ref-docopt" class="csl-entry">
+
+de Jonge, Edwin. 2018. *Docopt: Command-Line Interface Specification
+Language*. <https://CRAN.R-project.org/package=docopt>.
+
+</div>
+
+<div id="ref-here" class="csl-entry">
+
+Müller, Kirill. 2020. *Here: A Simpler Way to Find Your Files*.
+<https://CRAN.R-project.org/package=here>.
+
+</div>
+
+<div id="ref-R" class="csl-entry">
+
+R Core Team. 2019. *R: A Language and Environment for Statistical
+Computing*. Vienna, Austria: R Foundation for Statistical Computing.
+<https://www.R-project.org/>.
+
+</div>
+
+<div id="ref-broom" class="csl-entry">
+
+Robinson, David, Alex Hayes, and Simon Couch. 2021. *Broom: Convert
+Statistical Objects into Tidy Tibbles*.
+<https://CRAN.R-project.org/package=broom>.
+
+</div>
+
+<div id="ref-testhat" class="csl-entry">
+
+Wickham, Hadley. 2011. “Testthat: Get Started with Testing.” *The R
+Journal* 3: 5–10.
+<https://journal.r-project.org/archive/2011-1/RJournal_2011-1_Wickham.pdf>.
+
+</div>
+
+<div id="ref-tidyverse" class="csl-entry">
+
+———. 2017. *Tidyverse: Easily Install and Load the ’Tidyverse’*.
+<https://CRAN.R-project.org/package=tidyverse>.
+
+</div>
+
+<div id="ref-knitr" class="csl-entry">
+
+Xie, Yihui. 2014. “Knitr: A Comprehensive Tool for Reproducible Research
+in R.” In *Implementing Reproducible Computational Research*, edited by
+Victoria Stodden, Friedrich Leisch, and Roger D. Peng. Chapman;
+Hall/CRC. <http://www.crcpress.com/product/isbn/9781466561595>.
+
+</div>
+
+</div>
