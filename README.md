@@ -68,3 +68,4 @@ Alternatively, the scripts can be specified and run individually as:
 The US social determinants of health by county data set is licensed under CC0 Public Domain.
 
 ## References
+Davis, J. (2020, December 5). US social determinants of health by county. Kaggle. Retrieved December 2, 2021, from https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data. 
