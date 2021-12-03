@@ -10,7 +10,7 @@ Options:
 --out_dir=<out_dir>   Directory of where to save the figures and tables (e.g. results)
 " -> doc
 
-# Rscript src/eda_covid_socioeconomics.r --in_file=data/processed/cleaned_data.csv --out_dir=results
+# Rscript src/eda_covid_socioeconomics.R --in_file=data/processed/cleaned_data.csv --out_dir=results
 
 library(tidyverse)
 library(plotly)
@@ -43,52 +43,30 @@ main <- function(inpath, output){
   saveRDS(unique_vals, file = here(output, "unique_vals.rds"))
   
   covid_prevalence_table_county <- covid_data %>%
-    select(county, 
-           state, 
-           max_cases, 
+    select(county,
            cases_per_100k, 
-           avg_growth_rate, 
-           max_growth_rate) %>%
-    arrange(desc(max_cases)) 
+           percent_smokers, 
+           income_ratio, 
+           percent_unemployed_CHR) %>%
+    arrange(desc(cases_per_100k)) 
   
   highest_covid_growths <- head(data.frame(covid_prevalence_table_county))
-  saveRDS(highest_covid_growths, file = here(output, "highest_covid_growths.rds"))
+  saveRDS(highest_covid_growths, file = here(output, "highest_covid_cases.rds"))
   
   lowest_covid_growths <- tail(data.frame(covid_prevalence_table_county))
-  saveRDS(lowest_covid_growths, file = here(output, "lowest_covid_growths.rds"))
-  
-  covid_prevalence_table_state <- covid_data %>%
-    group_by(state) %>%
-    summarize(max_cases = sum(max_cases),
-              cases_per_100k = sum(cases_per_100k, na.rm=TRUE),
-              avg_growth_rate = mean(avg_growth_rate, na.rm=TRUE), 
-              max_growth_rate = mean(max_growth_rate)) %>%
-    arrange(desc(max_cases)) 
-  
-  highest_covid_growths_state <- head(data.frame(covid_prevalence_table_state))
-  saveRDS(highest_covid_growths_state, file = here(output, "highest_covid_growths_state.rds"))
-  
-  lowest_covid_growths_state <- tail(data.frame(covid_prevalence_table_state))
-  saveRDS(lowest_covid_growths_state, file = here(output, "lowest_covid_growths_state.rds"))
+  saveRDS(lowest_covid_growths, file = here(output, "lowest_covid_cases.rds"))
   
   covid_data_group_by_sate <- covid_data %>%
-    group_by(state) %>%
-    summarize(max_cases = sum(max_cases),
-              cases_per_100k = sum(cases_per_100k, na.rm=TRUE),
-              avg_growth_rate = mean(avg_growth_rate, na.rm=TRUE), 
-              max_growth_rate = mean(max_growth_rate),
-              total_population = sum(total_population), 
-              num_deaths = sum(num_deaths),
+    group_by(county) %>%
+    summarize(cases_per_100k = sum(cases_per_100k, na.rm=TRUE),
               percent_smokers = mean(percent_smokers),
-              percent_vaccinated = mean(percent_vaccinated),
               income_ratio = mean(income_ratio),
               population_density_per_sqmi = mean(population_density_per_sqmi),
-              percent_fair_or_poor_health = mean(percent_fair_or_poor_health),
               percent_unemployed_CHR = mean(percent_unemployed_CHR),
               violent_crime_rate = mean(violent_crime_rate),
               chlamydia_rate = mean(chlamydia_rate),
-              teen_birth_rate = mean(teen_birth_rate),
-              deaths_per_100k = sum(deaths_per_100k)) 
+              percent_fair_or_poor_health = mean(percent_fair_or_poor_health),
+              teen_birth_rate = mean(teen_birth_rate)) 
   
   par(mfrow=c(3, 4))
   
@@ -109,12 +87,14 @@ main <- function(inpath, output){
   
   covid_data_group_by_sate_long <- covid_data_group_by_sate %>%
     select_if(is.numeric) %>%
-    pivot_longer(-c(cases_per_100k, avg_growth_rate, max_growth_rate)) 
+    pivot_longer(-c(cases_per_100k)) 
   
   par(mfrow=c(3, 4))
   case_per_100k_plot <- covid_data_group_by_sate_long %>%
     ggplot(aes(x=value, y=cases_per_100k)) + 
-    geom_point(alpha = 0.4) +
+    geom_point(alpha = 0.2, size = 1) +
+    geom_smooth(method = 'lm', se = FALSE, linetype = "dashed",
+                size = 0.5, color = "red") +
     facet_wrap(~name, scales='free') +
     theme(strip.text = element_text(size=7),
           axis.text.x = element_text(size=7), 
@@ -126,21 +106,6 @@ main <- function(inpath, output){
   
   ggsave(here(output, "cases_per_100k.png"), width = 7, height = 5)
   
-  par(mfrow=c(3, 4))
-  
-  covid_growth_rate_plot <- covid_data_group_by_sate_long %>%
-    ggplot(aes(x=value, y=avg_growth_rate)) + 
-    geom_point(alpha = 0.4) +
-    facet_wrap(~name, scales='free') +
-    theme(strip.text = element_text(size=7),
-          axis.text.x = element_text(size=7), 
-          axis.text.y = element_text(size=7)) +
-    labs(x ="", 
-         y = "COVID-19 average growth rate") +
-    scale_x_continuous(labels = scales::label_number_si()) +
-    scale_y_continuous(labels = scales::label_number_si())
-  
-  ggsave(here(output, "growth_rate.png"), width = 7, height = 5)
 }
 
 main(opt$in_file, opt$out_dir)
