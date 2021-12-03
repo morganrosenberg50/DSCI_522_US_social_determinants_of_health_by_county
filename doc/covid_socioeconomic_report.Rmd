@@ -7,9 +7,9 @@ output:
   html_document:
     toc: true
     toc_depth: 2
-  github_document:
-    toc: true
-    toc_depth: 2
+  # github_document:
+  #   toc: true
+  #   toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -30,93 +30,84 @@ head_data <- readRDS(here("results", "head_data.rds"))
 summary_data <- readRDS(here("results", "summary_data.rds"))
 tail_data <- readRDS(here("results", "tail_data.rds"))
 unique_vals <- readRDS(here("results", "unique_vals.rds"))
-highest_covid_growths <- readRDS(here("results", "highest_covid_growths.rds"))
-lowest_covid_growths <- readRDS(here("results", "lowest_covid_growths.rds"))
-highest_covid_growths_state <- readRDS(here("results", "highest_covid_growths_state.rds"))
-lowest_covid_growths_state <- readRDS(here("results", "lowest_covid_growths_state.rds"))
+highest_covid_cases <- readRDS(here("results", "highest_covid_cases.rds"))
+lowest_covid_cases <- readRDS(here("results", "lowest_covid_cases.rds"))
 ```
-
-GitHub repository: <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county></strong></a>
 
 # Summary
 
-Here we attempt to build a Multiple Linear Regression model which can use to quantify the influence of potential factors on the COVID-19 prevalence (measured by cases per 100k population) among all the US counties. Our final regression model suggests that the percentage of smokers, teenage birth rate and chlamydia rate are the three features most strongly associated with COVID-19 prevalence. However, the intercept term is the one with the largest value. This means there are other unobserved factors weighted significantly in explaining the COVID-19 prevalence, thus we should continue the study to find and include those potential factors from 200 variables in the original dataset to improve the explanation of COVID-19 prevalence.
+Here, we attempt to build a multiple linear regression model which is used to quantify the influence of socioeconomic factors on the COVID-19 prevalence (measured by cases per 100,000 population) among all US counties. Factors such as percentage of smokers, income ratio, population density, percent unemployed, etc. are explored. Our final regression model suggests that the percentage of smokers, teenage birth rates, and chlamydia rates are the three features more strongly associated with COVID-19 prevalence. However, the original data set contained over 200 features and a subset of these features were chosen arbitrarily which means that there is still room to explore other socioeconomic features that are significantly associated with COVID-19 prevalence.
 
 # Introduction
 
-The original data set contained over 200 features with a high degree of granularity to support different exploratory questions. We identified a subset of these features whose relationship to COVID-19 prevalence we believed to be of interest to the general population based on intuition and validated by a media scan. We also added a few "wildcard" features ("chlamydia" and "teen birth rate") which might be related to broader social determinants of public health. In the future, we might choose to add additional features as they are requested by the community or become of interest to the team.
-
-In addition, our original data reported observations as a time series per county. However, due to limits in measurement and reporting, their was a varied rate of change for different features (e.g.COVID-19 cases were reported daily, whereas many other features were reported no more than once per month). As such, we believe it is most effective to summarize the data into static summary measures per county. In the processed data, we normalized the teen birth rate by per thousand females, and all other rates are by per 100k people.
-
-Each row in the processed data set contains normalized COVID-19 related features and other normalized demographic statistics for each county. There are 1621 observations in the data set, and 18 features. There are 0 observations with missing values in the data set. Below we show the descriptive statistics of the dataset.
+COVID-19 is a serious pandemic that has introduced a wide variety of challenges since 2019. By analysing the association of certain socioeconomic factors with COVID-19 prevalence, we hope to shed some light onto the societal features that may be associated with a high number of COVID-19 cases. Identifying the socioeconomic factors could also help policymakers and leaders make more informed decisions in combatting COVID-19.
 
 # Methods
 
 ## Data
 
-The original data set used in this project is of US social determinants of health by county created by Dr. John Davis at Indiana University, the United States. Each row in the original data set represents a day with its corresponding COVID-19 cases (accumulated), number of deaths due to COVID-19 (accumulated), and other demographic statistics.
+The original data set used in this project is of US social determinants of health by county created by Dr. John Davis at Indiana University, the United States. Each row in the original data set represents a day for a county with the cumulative number of COVID-19 cases, and other socioeconomic features of the county. There are over 790,000 rows and over 200 features in the data set. We identified a subset of these features which we were interested in and also added a few "wildcard" features such as the teen birth rate and chlamydia rate which might be related to broader social determinants of public health. In the future, additional features could be chosen as they become of interest to the team, or are requested by the community.
+
+The data set reports time series data per county for the cumulative COVID-19 cases and different socioeconomic features. However, due to limits in measurements and reporting, COVID-19 cases and socioeconomic features were updated at irregular intervals (e.g. COVID-19 cases were reported daily, whereas the socioeconomic features were reported no more than once a month). Thus, we created summary statistics for the socioeconomic features per county such as the mean percentage of smokers.
+
+The processed data contains 1621 observations and 18 features where each row corresponds to the cumulative COVID-19 cases, and aggregated socioeconomic features for each county.
 
 ## Analysis
 
-The Multiple Linear Regression was used to quantify the influence of potential factors we chosen on the COVID-19 prevalence (measured by cases per 100k population) among all the US counties. All variables included in the original data set, The R programming languages [@R] and the following R packages were used to perform the analysis:broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], here [@here]. The code used to perform the analysis and create this report can be found here: <https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county>.
+A multiple linear regression model with interaction terms was used to quantify the association of the socioeocnomic features with COVID-19 prevalence. The R programming language [@R] and the following R packages were used to perform the analysis: broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], and here [@here]. The code used to perform the analysis and create this report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county).
 
-# Results & Discussion
+# Results
 
 ## Exploratory Data Analysis (EDA)
 
-To look at whether each of the features might be useful to determine the change of COVID-19 cases, we first created two summary tables to check COVID-19 prevalence for each state and for each county.
+Exploratory data analysis was first carried out to determine the distributions of data, as well as to get early hints into how certain socioeconomic features might be associated with COVID-19 prevalence. First, we create a summary table to check COVID-19 prevalence for each county.
 
-### Table of COVID-19 prevalence for every county
+### COVID-19 prevalence for every county
 
 ```{r table of covid prevalence for each county, message=FALSE}
-kable(highest_covid_growths, caption = "Table 5. Top 5 counties with highest maximum number of COVID-19 cases.")
-kable(lowest_covid_growths, caption = "Table 6. Top 5 counties with lowest maximum number of COVID-19 cases")
+kable(highest_covid_cases,
+      caption = "Table 5. Top 5 counties with highest number of cumulative COVID-19 cases.",
+      digits = 3)
+
+kable(lowest_covid_cases,
+      caption = "Table 6. Top 5 counties with lowest number of cumulative COVID-19 cases",
+      digits = 3)
 ```
 
-### Table of COVID-19 prevalence for every state
+### Distributions of numeric features
 
-```{r table of covid prevalence for each state, message=FALSE}
-kable(highest_covid_growths_state, caption = "Table 7. Top 5 states with highest maximum number of COVID-19 cases.")
-kable(lowest_covid_growths_state, caption = "Table 8. Top 5 states with lowest maximum number of COVID-19 cases.")
-```
-
-### Visualization 1 - distributions of numeric features
-
-Then we created density plots for all numeric variables to check the distributions. From the density plots, we can see a right skew for many variables.
+Density plots for all numeric variables are also created to check their distributions. The is a positive skew for many of the variables.
 
 ```{r density plots for numeric variables, warning=FALSE, fig.cap="Figure 1. Density plots of numeric feature", out.width="100%"}
 knitr::include_graphics("../results/numeric_feats_dist.png")
 ```
 
-### Visualization 2 - relationships between total COVID-19 cases per 100k of each state and other features
+### Relationships between cumulative COVID-19 cases per 100,000 of each county and socioeconomic features
 
-In addition, we created plots to demonstrate relationships between COVID-19 cases per 100k of each state and other features in the dataset. We can observe linear relationships between income ratio, percent_fair_poor_health, and percent_smokers with cases per 100k. Although all of the relationships are not strong.
+Plots to demonstrate the relationship between COVID-19 cases per 100,000 and socioeconomic features are created for each county. The linear relationships are not strong individually, however, this could be because each feature is observed in isolation. There might be interactions between these features which can have a linear relationship with COVID-19 prevalence.
 
 ```{r cases per 100k vs other features, warning=FALSE, fig.cap="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features", out.width="100%"}
 knitr::include_graphics("../results/cases_per_100k.png")
 ```
 
-### Visualization 3 - relationships between average COVID-19 cases growth rate for each state and other features
+## Multiple linear regression model
 
-We also created plots to demonstrate relationships between average COVID-19 cases growth rate of each state and other features in the dataset. We can see that there is no clear relationships for COVID-19 growth rate.
-
-```{r growth rate vs other features, warning=FALSE, fig.cap="Figure 3. Plots of average COVID-19 growth rate v.s. other features", out.width="100%"}
-knitr::include_graphics("../results/growth_rate.png")
-```
-
-## Data Analysis (Modeling)
-
-The results of data analysis:
+The coefficients for a random sample of 10 features are selected, along with the p-values and whether they are significant at the 0.05 significance level.
 
 ```{r model coefs table, warning=FALSE}
 kable(mlr_model, caption = "Table 9. Coefficients of each feature of the multiple linear regression model.")
 ```
 
-### Visualization 4 - Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.
+### Coefficients of significant feature of the multiple linear regression model with 95% confidence intervals
+
+The coefficients along with their 95% confidence intervals are plotted as error bars for features that were significant at the 0.05 significance level.
 
 ```{r model coefs figure, warning=FALSE, fig.cap="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.", out.width="100%"}
 knitr::include_graphics("../results/feature_coefs.png")
 ```
+
+# Discussion
+PLEASE EDIT
 
 The multiple linear regression result reveals that only three features and the intercept term are statistically significant on 5% significant level. After normalizing all features, the value of the intercept term is larger than the sum of the absolute coefficient of all other significant features. This means our current model has low explanatory power on the responsive variable COVID-19 cases, which enables the intercept term to capture most of the changes. To further improve this model in future with hopes of finding the essential influence factors of COVID-19 prevalence, we need to improve our feature selecting process by using methods like PCA model and incorporating advanced feature engineering techniques.
 

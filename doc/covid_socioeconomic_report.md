@@ -8,70 +8,38 @@ Joshua Sia, Morgan Rosenberg, Sufang Tan, Yinan Guo (Group 25) </br>
 -   [Methods](#methods)
     -   [Data](#data)
     -   [Analysis](#analysis)
--   [Results & Discussion](#results--discussion)
+-   [Results](#results)
     -   [Exploratory Data Analysis
         (EDA)](#exploratory-data-analysis-eda)
-        -   [Table of COVID-19 prevalence for every
-            county](#table-of-covid-19-prevalence-for-every-county)
-        -   [Table of COVID-19 prevalence for every
-            state](#table-of-covid-19-prevalence-for-every-state)
-        -   [Visualization 1 - distributions of numeric
-            features](#visualization-1---distributions-of-numeric-features)
-        -   [Visualization 2 - relationships between total COVID-19
-            cases per 100k of each state and other
-            features](#visualization-2---relationships-between-total-covid-19-cases-per-100k-of-each-state-and-other-features)
-        -   [Visualization 3 - relationships between average COVID-19
-            cases growth rate for each state and other
-            features](#visualization-3---relationships-between-average-covid-19-cases-growth-rate-for-each-state-and-other-features)
-    -   [Data Analysis (Modeling)](#data-analysis-modeling)
-        -   [Visualization 4 - Coefficients of each feature of the
-            multiple linear regression model with 95% confidence
-            intervals.](#visualization-4---coefficients-of-each-feature-of-the-multiple-linear-regression-model-with-95-confidence-intervals)
+    -   [Multiple linear regression
+        model](#multiple-linear-regression-model)
+-   [Discussion](#discussion)
 -   [References](#references)
-
-GitHub repository:
-<a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county" class="uri"><strong><https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county></strong></a>
 
 # Summary
 
-Here we attempt to build a Multiple Linear Regression model which can
-use to quantify the influence of potential factors on the COVID-19
-prevalence (measured by cases per 100k population) among all the US
-counties. Our final regression model suggests that the percentage of
-smokers, teenage birth rate and chlamydia rate are the three features
-most strongly associated with COVID-19 prevalence. However, the
-intercept term is the one with the largest value. This means there are
-other unobserved factors weighted significantly in explaining the
-COVID-19 prevalence, thus we should continue the study to find and
-include those potential factors from 200 variables in the original
-dataset to improve the explanation of COVID-19 prevalence.
+Here, we attempt to build a multiple linear regression model which is
+used to quantify the influence of socioeconomic factors on the COVID-19
+prevalence (measured by cases per 100,000 population) among all US
+counties. Factors such as percentage of smokers, income ratio,
+population density, percent unemployed, etc. are explored. Our final
+regression model suggests that the percentage of smokers, teenage birth
+rates, and chlamydia rates are the three features more strongly
+associated with COVID-19 prevalence. However, the original data set
+contained over 200 features and a subset of these features were chosen
+arbitrarily which means that there is still room to explore other
+socioeconomic features that are significantly associated with COVID-19
+prevalence.
 
 # Introduction
 
-The original data set contained over 200 features with a high degree of
-granularity to support different exploratory questions. We identified a
-subset of these features whose relationship to COVID-19 prevalence we
-believed to be of interest to the general population based on intuition
-and validated by a media scan. We also added a few “wildcard” features
-(“chlamydia” and “teen birth rate”) which might be related to broader
-social determinants of public health. In the future, we might choose to
-add additional features as they are requested by the community or become
-of interest to the team.
-
-In addition, our original data reported observations as a time series
-per county. However, due to limits in measurement and reporting, their
-was a varied rate of change for different features (e.g.COVID-19 cases
-were reported daily, whereas many other features were reported no more
-than once per month). As such, we believe it is most effective to
-summarize the data into static summary measures per county. In the
-processed data, we normalized the teen birth rate by per thousand
-females, and all other rates are by per 100k people.
-
-Each row in the processed data set contains normalized COVID-19 related
-features and other normalized demographic statistics for each county.
-There are 1621 observations in the data set, and 18 features. There are
-0 observations with missing values in the data set. Below we show the
-descriptive statistics of the dataset.
+COVID-19 is a serious pandemic that has introduced a wide variety of
+challenges since 2019. By analysing the association of certain
+socioeconomic factors with COVID-19 prevalence, we hope to shed some
+light onto the societal features that may be associated with a high
+number of COVID-19 cases. Identifying the socioeconomic factors could
+also help policymakers and leaders make more informed decisions in
+combatting COVID-19.
 
 # Methods
 
@@ -79,129 +47,127 @@ descriptive statistics of the dataset.
 
 The original data set used in this project is of US social determinants
 of health by county created by Dr. John Davis at Indiana University, the
-United States. Each row in the original data set represents a day with
-its corresponding COVID-19 cases (accumulated), number of deaths due to
-COVID-19 (accumulated), and other demographic statistics.
+United States. Each row in the original data set represents a day for a
+county with the cumulative number of COVID-19 cases, and other
+socioeconomic features of the county. There are over 790,000 rows and
+over 200 features in the data set. We identified a subset of these
+features which we were interested in and also added a few “wildcard”
+features such as the teen birth rate and chlamydia rate which might be
+related to broader social determinants of public health. In the future,
+additional features could be chosen as they become of interest to the
+team, or are requested by the community.
+
+The data set reports time series data per county for the cumulative
+COVID-19 cases and different socioeconomic features. However, due to
+limits in measurements and reporting, COVID-19 cases and socioeconomic
+features were updated at irregular intervals (e.g. COVID-19 cases were
+reported daily, whereas the socioeconomic features were reported no more
+than once a month). Thus, we created summary statistics for the
+socioeconomic features per county such as the mean percentage of
+smokers.
+
+The processed data contains 1621 observations and 18 features where each
+row corresponds to the cumulative COVID-19 cases, and aggregated
+socioeconomic features for each county.
 
 ## Analysis
 
-The Multiple Linear Regression was used to quantify the influence of
-potential factors we chosen on the COVID-19 prevalence (measured by
-cases per 100k population) among all the US counties. All variables
-included in the original data set, The R programming languages (R Core
-Team 2019) and the following R packages were used to perform the
-analysis:broom (Robinson, Hayes, and Couch 2021), docopt (de Jonge
-2018), knitr (Xie 2014), tidyverse (Wickham 2017), testhat(Wickham
-2011), here (Müller 2020). The code used to perform the analysis and
-create this report can be found here:
-<https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county>.
+A multiple linear regression model with interaction terms was used to
+quantify the association of the socioeocnomic features with COVID-19
+prevalence. The R programming language (R Core Team 2019) and the
+following R packages were used to perform the analysis: broom (Robinson,
+Hayes, and Couch 2021), docopt (de Jonge 2018), knitr (Xie 2014),
+tidyverse (Wickham 2017), testhat(Wickham 2011), and here (Müller 2020).
+The code used to perform the analysis and create this report can be
+found
+[here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county).
 
-# Results & Discussion
+# Results
 
 ## Exploratory Data Analysis (EDA)
 
-To look at whether each of the features might be useful to determine the
-change of COVID-19 cases, we first created two summary tables to check
-COVID-19 prevalence for each state and for each county.
+Exploratory data analysis was first carried out to determine the
+distributions of data, as well as to get early hints into how certain
+socioeconomic features might be associated with COVID-19 prevalence.
+First, we create a summary table to check COVID-19 prevalence for each
+county.
 
-### Table of COVID-19 prevalence for every county
+### COVID-19 prevalence for every county
 
-| county        | state      | max_cases | cases_per_100k | avg_growth_rate | max_growth_rate |
-|:--------------|:-----------|----------:|---------------:|----------------:|----------------:|
-| Los Angeles   | California |    430713 |       4282.652 |       0.0350836 |       0.8571429 |
-| New York City | New York   |    329406 |       3892.786 |       0.0373151 |       0.5833333 |
-| Cook          | Illinois   |    322122 |      11008.466 |    -379.1270985 |       0.9998757 |
-| Miami-Dade    | Florida    |    238812 |       8963.008 |       0.0390208 |       0.7500000 |
-| Maricopa      | Arizona    |    224924 |       5501.316 |       0.0347391 |       0.5000000 |
-| Harris        | Texas      |    195558 |       8472.749 |     -66.2769127 |       0.9964581 |
+| county   | cases_per_100k | percent_smokers | income_ratio | percent_unemployed_CHR |
+|:---------|---------------:|----------------:|-------------:|-----------------------:|
+| Franklin |       56251.54 |          18.075 |        4.439 |                  3.971 |
+| Brown    |       42577.30 |          16.292 |        4.050 |                  3.377 |
+| Marion   |       40167.81 |          19.135 |        4.664 |                  4.268 |
+| Union    |       39026.50 |          17.805 |        4.674 |                  4.327 |
+| Clark    |       36860.96 |          18.495 |        4.168 |                  4.171 |
+| Wayne    |       33275.47 |          19.610 |        4.610 |                  4.823 |
 
-Table 5. Top 5 counties with highest maximum number of COVID-19 cases.
+Table 5. Top 5 counties with highest number of cumulative COVID-19
+cases.
 
-|      | county      | state    | max_cases | cases_per_100k | avg_growth_rate | max_growth_rate |
-|:-----|:------------|:---------|----------:|---------------:|----------------:|----------------:|
-| 1616 | Norton city | Virginia |        91 |      2287.5817 |       0.0149803 |       0.5000000 |
-| 1617 | Glascock    | Georgia  |        86 |      2816.9014 |       0.0182532 |       0.5000000 |
-| 1618 | Upton       | Texas    |        84 |      2417.2662 |       0.0209599 |       0.5000000 |
-| 1619 | Baylor      | Texas    |        57 |      1566.3644 |       0.0054022 |       0.5000000 |
-| 1620 | Piscataquis | Maine    |        57 |       334.4285 |       0.0134190 |       0.5000000 |
-| 1621 | Grand Isle  | Vermont  |        46 |       662.3470 |       0.0132021 |       0.6666667 |
+|      | county      | cases_per_100k | percent_smokers | income_ratio | percent_unemployed_CHR |
+|:-----|:------------|---------------:|----------------:|-------------:|-----------------------:|
+| 1616 | Sagadahoc   |        483.862 |          13.591 |        3.946 |                  2.711 |
+| 1617 | Rutland     |        445.679 |          14.580 |        4.423 |                  3.131 |
+| 1618 | Windsor     |        406.126 |          13.396 |        4.351 |                  2.337 |
+| 1619 | Piscataquis |        334.429 |          18.901 |        4.650 |                  4.165 |
+| 1620 | Aroostook   |        249.262 |          18.593 |        5.049 |                  4.813 |
+| 1621 | Kauai       |        170.341 |          12.738 |        4.417 |                  2.512 |
 
-Table 6. Top 5 counties with lowest maximum number of COVID-19 cases
+Table 6. Top 5 counties with lowest number of cumulative COVID-19 cases
 
-### Table of COVID-19 prevalence for every state
+### Distributions of numeric features
 
-| state      | max_cases | cases_per_100k | avg_growth_rate | max_growth_rate |
-|:-----------|----------:|---------------:|----------------:|----------------:|
-| California |   1316934 |       178169.7 |      -0.5259852 |       0.6446646 |
-| Texas      |   1088014 |       735038.7 |      -2.4912836 |       0.6218917 |
-| Florida    |    876362 |       306312.7 |      -4.1977126 |       0.6667161 |
-| Illinois   |    619604 |       253432.4 |     -17.1581650 |       0.6968899 |
-| New York   |    586878 |       113808.1 |      -5.7251701 |       0.7163069 |
-| Georgia    |    452834 |       743968.0 |      -2.2504604 |       0.7116388 |
-
-Table 7. Top 5 states with highest maximum number of COVID-19 cases.
-
-|     | state                | max_cases | cases_per_100k | avg_growth_rate | max_growth_rate |
-|:----|:---------------------|----------:|---------------:|----------------:|----------------:|
-| 46  | District of Columbia |     22480 |       3411.183 |       0.0308881 |       0.7500000 |
-| 47  | Maine                |     20279 |      31187.580 |      -1.2307740 |       0.6736190 |
-| 48  | Alaska               |     19082 |      12589.425 |       0.0239296 |       0.5367647 |
-| 49  | Hawaii               |     18373 |       3157.336 |       0.0232393 |       0.5530303 |
-| 50  | New Hampshire        |     12374 |      10509.595 |      -0.6624274 |       0.6426744 |
-| 51  | Vermont              |      3256 |       5541.161 |       0.0169872 |       0.5543210 |
-
-Table 8. Top 5 states with lowest maximum number of COVID-19 cases.
-
-### Visualization 1 - distributions of numeric features
-
-Then we created density plots for all numeric variables to check the
-distributions. From the density plots, we can see a right skew for many
-variables.
+Density plots for all numeric variables are also created to check their
+distributions. The is a positive skew for many of the variables.
 
 <img src="../results/numeric_feats_dist.png" title="Figure 1. Density plots of numeric feature" alt="Figure 1. Density plots of numeric feature" width="100%" />
 
-### Visualization 2 - relationships between total COVID-19 cases per 100k of each state and other features
+### Relationships between cumulative COVID-19 cases per 100,000 of each county and socioeconomic features
 
-In addition, we created plots to demonstrate relationships between
-COVID-19 cases per 100k of each state and other features in the dataset.
-We can observe linear relationships between income ratio,
-percent_fair_poor_health, and percent_smokers with cases per 100k.
-Although all of the relationships are not strong.
+Plots to demonstrate the relationship between COVID-19 cases per 100,000
+and socioeconomic features are created for each county. The linear
+relationships are not strong individually, however, this could be
+because each feature is observed in isolation. There might be
+interactions between these features which can have a linear relationship
+with COVID-19 prevalence.
 
 <img src="../results/cases_per_100k.png" title="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features" alt="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features" width="100%" />
 
-### Visualization 3 - relationships between average COVID-19 cases growth rate for each state and other features
+## Multiple linear regression model
 
-We also created plots to demonstrate relationships between average
-COVID-19 cases growth rate of each state and other features in the
-dataset. We can see that there is no clear relationships for COVID-19
-growth rate.
+The coefficients for a random sample of 10 features are selected, along
+with the p-values and whether they are significant at the 0.05
+significance level.
 
-<img src="../results/growth_rate.png" title="Figure 3. Plots of average COVID-19 growth rate v.s. other features" alt="Figure 3. Plots of average COVID-19 growth rate v.s. other features" width="100%" />
-
-## Data Analysis (Modeling)
-
-The results of data analysis:
-
-| term                        |   estimate |  conf.low |  conf.high |   p.value | is_sig |
-|:----------------------------|-----------:|----------:|-----------:|----------:|:-------|
-| (Intercept)                 | 6103.88512 | 5883.1955 | 6324.57474 | 0.0000000 | TRUE   |
-| percent_smokers             |  694.90576 |  387.9913 | 1001.82019 | 0.0000096 | TRUE   |
-| teen_birth_rate             |  521.14262 |  148.6937 |  893.59149 | 0.0061274 | TRUE   |
-| chlamydia_rate              |  214.30427 |  -80.1007 |  508.70925 | 0.1535501 | FALSE  |
-| percent_vaccinated          |   32.98412 | -225.3009 |  291.26918 | 0.8022450 | FALSE  |
-| violent_crime_rate          |   29.41014 | -244.5508 |  303.37113 | 0.8332546 | FALSE  |
-| income_ratio                | -168.86961 | -459.2280 |  121.48876 | 0.2541422 | FALSE  |
-| population_density_per_sqmi | -197.47020 | -436.7978 |   41.85743 | 0.1057743 | FALSE  |
-| percent_fair_or_poor_health | -205.36215 | -656.1671 |  245.44281 | 0.3717101 | FALSE  |
-| percent_unemployed_CHR      | -731.93358 | -996.1554 | -467.71180 | 0.0000001 | TRUE   |
+| term                                               |     estimate |    conf.low |  conf.high |   p.value | is_sig |
+|:---------------------------------------------------|-------------:|------------:|-----------:|----------:|:-------|
+| percent_unemployed_CHR                             | -1035.480119 | -1360.17867 | -710.78156 | 0.0000000 | TRUE   |
+| percent_fair_or_poor_health:percent_unemployed_CHR |   394.047408 |    42.66174 |  745.43308 | 0.0279792 | TRUE   |
+| percent_smokers:percent_fair_or_poor_health        |  -613.882978 | -1068.95261 | -158.81334 | 0.0082261 | TRUE   |
+| population_density_per_sqmi:chlamydia_rate         |  -240.525299 |  -630.69991 |  149.64932 | 0.2267829 | FALSE  |
+| violent_crime_rate                                 |   211.739489 |  -118.18567 |  541.66465 | 0.2082769 | FALSE  |
+| percent_vaccinated:percent_unemployed_CHR          |  -236.785678 |  -492.00469 |   18.43333 | 0.0689788 | FALSE  |
+| percent_vaccinated:percent_fair_or_poor_health     |  -299.976440 |  -762.92609 |  162.97321 | 0.2039269 | FALSE  |
+| population_density_per_sqmi:percent_unemployed_CHR |   470.454185 |   -85.80346 | 1026.71183 | 0.0973327 | FALSE  |
+| income_ratio:percent_unemployed_CHR                |    -8.633577 |  -313.66957 |  296.40241 | 0.9557341 | FALSE  |
+| percent_smokers:population_density_per_sqmi        |  -368.353360 | -1158.78317 |  422.07645 | 0.3608157 | FALSE  |
 
 Table 9. Coefficients of each feature of the multiple linear regression
 model.
 
-### Visualization 4 - Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.
+### Coefficients of significant feature of the multiple linear regression model with 95% confidence intervals
+
+The coefficients along with their 95% confidence intervals are plotted
+as error bars for features that were significant at the 0.05
+significance level.
 
 <img src="../results/feature_coefs.png" title="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals." alt="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals." width="100%" />
+
+# Discussion
+
+PLEASE EDIT
 
 The multiple linear regression result reveals that only three features
 and the intercept term are statistically significant on 5% significant

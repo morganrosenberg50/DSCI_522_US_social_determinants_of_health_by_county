@@ -17,6 +17,7 @@ library(testthat)
 library(broom)
 library(docopt)
 library(here)
+set.seed(2021)
 
 opt <- docopt(doc)
 
@@ -36,7 +37,7 @@ main <- function(opt) {
   standardised_data <- standardise_features(df, model_features)
 
   # Build model
-  mlr <- lm(cases_per_100k ~ .,
+  mlr <- lm(cases_per_100k ~ . * .,
             data = standardised_data |>
               select(c(response, model_features)))
 
@@ -48,6 +49,7 @@ main <- function(opt) {
   print(mlr_tidy)
 
   estimate_plot <- mlr_tidy |>
+    filter(is_sig == TRUE) |>
     ggplot(aes(x = estimate, y = factor(term, levels = term))) +
     geom_point() +
     geom_errorbar(aes(xmin = conf.low, xmax = conf.high), width = 0.2) +
@@ -59,11 +61,27 @@ main <- function(opt) {
   ggsave(here(opt$out_dir, "feature_coefs.png"), width = 7, height = 3)
   
   saved_mlr <- mlr_tidy |>
-    select(term, estimate, conf.low, conf.high, p.value, is_sig)
+    select(term, estimate, conf.low, conf.high, p.value, is_sig) |>
+    sample_n(10) |>
+    arrange(desc(is_sig))
   saveRDS(saved_mlr, file = here(opt$out_dir, "mlr_model.rds"))
 }
 
 standardise_features <- function(data, features) {
+  #' Standardise features in the data frame
+  #'
+  #' Standardises features in the data frame such that it is centered at 0
+  #' and has a standard deviation of 1
+  #'
+  #' @param data Input data frame
+  #' @param features List of features to standardise
+  #'
+  #' @return Data frame with standardised features
+  #' @export
+  #'
+  #' @examples
+  #' test_df <- data.frame(response = c(1, 0), feature1 = c(1, 0))
+  #' standardise_features(test_df, c("feature1"))
   if (!is.data.frame(data)) {
     stop("Input data argument is not a data frame")
   }
