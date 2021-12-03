@@ -30,3 +30,4 @@ doc/covid_socioeconomic_report.html : doc/covid_socioeconomic_report.Rmd results
 
 clean :
 		rm -rf results/*
+		rm - rf data/processed/*
