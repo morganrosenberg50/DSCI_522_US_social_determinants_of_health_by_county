@@ -56,6 +56,23 @@ main <- function(opt) {
 }
 
 get_url <- function(url, .kaggle_base_url, filename) {
+  #' Get the Kaggle URL where the data file resides
+  #'
+  #' Formats the URL to use the Kaggle API to download data
+  #'
+  #' @param url URL of Kaggle data page
+  #' @param .kaggle_base_url Base Kaggle
+  #' API URL ("https://www.kaggle.com/api/v1")
+  #' @param filename .csv file to download from the Kaggle data page
+  #'
+  #' @return Formatted URL with Kaggle API
+  #' @export
+  #'
+  #' @examples
+  #' url <- "https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data"
+  #' .kaggle_base_url <- "https://www.kaggle.com/api/v1"
+  #' file <- "us_county_sociohealth_data.csv"
+  #' get_url(url, .kaggle_base_url, file)
   idx <- str_locate(url, ".com")
   ref <- str_sub(url, start = idx[2] + 2, end = -1)
   paste0(.kaggle_base_url, "/datasets/download/", ref, "/", filename)

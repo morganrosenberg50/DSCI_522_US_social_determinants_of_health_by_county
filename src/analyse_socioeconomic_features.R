@@ -64,6 +64,20 @@ main <- function(opt) {
 }
 
 standardise_features <- function(data, features) {
+  #' Standardise features in the data frame
+  #'
+  #' Standardises features in the data frame such that it is centered at 0
+  #' and has a standard deviation of 1
+  #'
+  #' @param data Input data frame
+  #' @param features List of features to standardise
+  #'
+  #' @return Data frame with standardised features
+  #' @export
+  #'
+  #' @examples
+  #' test_df <- data.frame(response = c(1, 0), feature1 = c(1, 0))
+  #' standardise_features(test_df, c("feature1"))
   if (!is.data.frame(data)) {
     stop("Input data argument is not a data frame")
   }
