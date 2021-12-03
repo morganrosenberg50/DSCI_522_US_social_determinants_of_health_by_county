@@ -9,16 +9,9 @@ Columbia.
 
 ## **About**
 
-The data set used in this project contains county-level data on health,
-socioeconomics, weather, and COVID-19 cases compiled by John Davis. It
-can be found
-[here](https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data),
-specifically, the `US_counties_COVID19_health_weather_data.csv` file.
-Each row in the data set represents a date corresponding to the number
-of COVID-19 cases in the county, as well as other features about the
-county (e.g. smokers percentage, population, income ratio, etc.).
+COVID-19 is a serious pandemic that has introduced a wide variety of challenges since 2019. By analysing the association of certain socioeconomic factors with COVID-19 prevalence, we hope to shed some light onto the societal features that may be associated with a high number of COVID-19 cases. Identifying the socioeconomic factors could also help policymakers and leaders make more informed decisions in combatting COVID-19.
 
-Here we attempt to build a Multiple linear regression model which can use to quantify the influence of potential factors on the COVID-19 prevalence(measured by cases per 100k population) among all the US counties. Our final regression model suggests that the percentage of smokers, teenage birth rate and chlamydia rate are the three features most strongly associated with COVID-19 prevalence. However, the intercept term is the one with the largest value. This means there are other unobserved factors weighted significantly in explaining the COVID-19 prevalence, thus we should continue the study to find and include those potential factors from 200 variables in the original dataset to improve the explanation of COVID-19 prevalence.
+Here, we attempt to build a multiple linear regression model which is used to quantify the influence of socioeconomic factors on the COVID-19 prevalence (measured by cases per 100,000 population) among all US counties. Factors such as percentage of smokers, income ratio, population density, percent unemployed, etc. are explored. Our final regression model suggests that the percentage of smokers, teenage birth rates, and chlamydia rates are the three features more strongly associated with COVID-19 prevalence. However, the original data set contained over 200 features and a subset of these features were chosen arbitrarily which means that there is still room to explore other socioeconomic features that are significantly associated with COVID-19 prevalence.
 
 ## **Report**
 
@@ -26,7 +19,7 @@ The final report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_soci
 
 ## Usage
 
-To replicate the analysis, please have a `kaggle.json` file containing your Kaggle credentials and a `data` directory at the root containing the subdirectories `raw` and `processed`. To obtain your Kaggle credentials, follow the instructions on [Kaggle](https://www.kaggle.com/docs/api). Next, clone this GitHub repository, install the
+To replicate the analysis, please have a `kaggle.json` file containing your Kaggle credentials. To obtain your Kaggle credentials, follow the instructions on [Kaggle](https://www.kaggle.com/docs/api). Next, clone this GitHub repository, install the
 dependencies listed below, and run the following
 commands at the command line/terminal from the root directory of this
 project:
