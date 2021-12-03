@@ -62,6 +62,7 @@ Alternatively, the scripts can be specified and run individually as:
     -   plotly=4.10.0
     -   here=1.0.1
     -   knitr=1.33
+    -   testthat=3.0.4
 
 ## License:
 
