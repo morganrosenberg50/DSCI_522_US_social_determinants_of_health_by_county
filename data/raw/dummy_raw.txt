@@ -1,1 +1,1 @@
-Dummy raw data file
+The raw data file is too large to upload to GitHub. Please refer to the Usage section of the README file to download the file to your local repository.
