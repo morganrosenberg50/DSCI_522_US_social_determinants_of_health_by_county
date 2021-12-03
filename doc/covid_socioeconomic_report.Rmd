@@ -7,9 +7,9 @@ output:
   html_document:
     toc: true
     toc_depth: 2
-  github_document:
-    toc: true
-    toc_depth: 2
+  # github_document:
+  #   toc: true
+  #   toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -54,7 +54,7 @@ The processed data contains 1621 observations and 18 features where each row cor
 
 ## Analysis
 
-A multiple linear regression model was used to quantify the association of the socioeocnomic features with COVID-19 prevalence. The R programming language [@R] and the following R packages were used to perform the analysis: broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], and here [@here]. The code used to perform the analysis and create this report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county).
+A multiple linear regression model with interaction terms was used to quantify the association of the socioeocnomic features with COVID-19 prevalence. The R programming language [@R] and the following R packages were used to perform the analysis: broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], and here [@here]. The code used to perform the analysis and create this report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county).
 
 # Results
 
