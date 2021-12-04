@@ -1,4 +1,4 @@
-# Author: Morgan Rosenberg
+# Author: Group 25
 # Date: 2021-11-24
 
 "Cleans and organizes data from US Counties: COVID19 + Weather + Socio/Health data (https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data)
@@ -36,7 +36,19 @@ main <- function(inpath, output){
   filtered_data <- filter_data(raw_data)
   write_csv(filtered_data, outpath)
 }
-
+#' Filter data for pre-determined analyses
+#' 
+#' Filters specific columns and manipulates data for model and visual analysis
+#' 
+#' @param raw_data complete and unaltered data from Kaggle stored in a dataframe
+#'
+#' @return None
+#' 
+#' @examples 
+#' raw_data <- read_csv(my_raw_data.csv)
+#' filter_data(raw_data)
+#' 
+#' @export
 filter_data <- function(raw_data){
   col_list = c(
     "date", "county", "cases", "state", 
