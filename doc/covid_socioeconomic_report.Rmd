@@ -13,7 +13,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 library(knitr)
 library(docopt)
 library(tidyverse)
@@ -25,11 +25,6 @@ library(here)
 
 ```{r load model results}
 mlr_model <- readRDS(here("results", "mlr_model.rds"))
-desc_stats <- readRDS(here("results", "desc_stats.rds"))
-head_data <- readRDS(here("results", "head_data.rds"))
-summary_data <- readRDS(here("results", "summary_data.rds"))
-tail_data <- readRDS(here("results", "tail_data.rds"))
-unique_vals <- readRDS(here("results", "unique_vals.rds"))
 highest_covid_cases <- readRDS(here("results", "highest_covid_cases.rds"))
 lowest_covid_cases <- readRDS(here("results", "lowest_covid_cases.rds"))
 ```

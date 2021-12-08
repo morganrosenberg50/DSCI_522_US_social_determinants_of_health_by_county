@@ -27,20 +27,19 @@ main <- function(inpath, output){
   covid_data <- read_csv(inpath)
   n_nas <- nrow(covid_data) - (drop_na(covid_data) %>% tally())
   
-  desc_stats <- str(covid_data)
-  saveRDS(desc_stats, file = here(output, "desc_stats.rds"))
+  print("Getting summary statistics...")
   
-  summary_df <- summary(covid_data)
-  saveRDS(summary_df, file = here(output, "summary_data.rds"))
+  # summary_df <- summary(covid_data)
+  # saveRDS(summary_df, file = here(output, "summary_data.rds"))
   
-  head_df <- head(covid_data)
-  saveRDS(head_df, file = here(output, "head_data.rds"))
+  # head_df <- head(covid_data)
+  # saveRDS(head_df, file = here(output, "head_data.rds"))
   
-  tail_df <- tail(covid_data)
-  saveRDS(tail_df, file = here(output, "tail_data.rds"))
+  # tail_df <- tail(covid_data)
+  # saveRDS(tail_df, file = here(output, "tail_data.rds"))
   
-  unique_vals <- apply(covid_data, 2, function(x) length(unique(x)))
-  saveRDS(unique_vals, file = here(output, "unique_vals.rds"))
+  # unique_vals <- apply(covid_data, 2, function(x) length(unique(x)))
+  # saveRDS(unique_vals, file = here(output, "unique_vals.rds"))
   
   covid_prevalence_table_county <- covid_data %>%
     select(county,
@@ -68,6 +67,7 @@ main <- function(inpath, output){
               percent_fair_or_poor_health = mean(percent_fair_or_poor_health),
               teen_birth_rate = mean(teen_birth_rate)) 
   
+  print("Getting EDA figures...")
   par(mfrow=c(3, 4))
   
   numeric_feats_dist <- covid_data_group_by_sate %>%
