@@ -17,7 +17,7 @@ data/processed/cleaned_data.csv : data/raw/US_counties_COVID19_health_weather_da
 		Rscript src/data_wrangling.R --input=data/raw/US_counties_COVID19_health_weather_data.csv --output=data/processed
 
 # EDA
-results/desc_stats.rds results/summary_data.rds results/head_data.rds results/tail_data.rds results/unique_vals.rds results/highest_covid_cases.rds results/lowest_covid_cases.rds results/numeric_feats_dist.png results/cases_per_100k.png : data/processed/cleaned_data.csv
+results/highest_covid_cases.rds results/lowest_covid_cases.rds results/numeric_feats_dist.png results/cases_per_100k.png : data/processed/cleaned_data.csv
 		Rscript src/eda_covid_socioeconomics.R --in_file=data/processed/cleaned_data.csv --out_dir=results
 
 # Perform data analysis
@@ -25,7 +25,7 @@ results/feature_coefs.png results/mlr_model.rds : data/processed/cleaned_data.cs
 		Rscript src/analyse_socioeconomic_features.R --in_file=data/processed/cleaned_data.csv --out_dir=results
 
 # Render report
-doc/covid_socioeconomic_report.html : doc/covid_socioeconomic_report.Rmd results/desc_stats.rds results/summary_data.rds results/head_data.rds results/tail_data.rds results/unique_vals.rds results/highest_covid_cases.rds results/lowest_covid_cases.rds results/numeric_feats_dist.png results/cases_per_100k.png results/feature_coefs.png results/mlr_model.rds
+doc/covid_socioeconomic_report.html : doc/covid_socioeconomic_report.Rmd results/highest_covid_cases.rds results/lowest_covid_cases.rds results/numeric_feats_dist.png results/cases_per_100k.png results/feature_coefs.png results/mlr_model.rds
 		Rscript -e "rmarkdown::render('doc/covid_socioeconomic_report.Rmd')"
 
 clean :
