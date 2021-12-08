@@ -49,7 +49,7 @@ Alternatively, the scripts can be specified and run individually as:
     Rscript -e "rmarkdown::render('doc/covid_socioeconomic_report.Rmd')"
 
 The dependency diagram of the Makefile is shown below.
-![Dependency diagram of Makefile](Makefile.png)
+![Dependency diagram of Makefile](Makefile-basename.png)
 
 ## **Dependencies**
 -   R version 4.1.1 and R packages:
