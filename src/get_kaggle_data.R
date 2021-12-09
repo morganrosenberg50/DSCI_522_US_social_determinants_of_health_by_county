@@ -43,6 +43,7 @@ main <- function(opt) {
   
   content_type <- rcall[[3]]$`content-type`
 
+  print("Downloading data from URL...")
   if (grepl("zip", content_type)) {
     temp <- tempfile()
     download.file(rcall$url, temp)
@@ -52,6 +53,8 @@ main <- function(opt) {
   else {
     stop("URL does not lead to a valid data set.")
   }
+  
+  print("Saving data into csv file...")
   write.csv(df, opt$out_file, row.names = FALSE)
 }
 

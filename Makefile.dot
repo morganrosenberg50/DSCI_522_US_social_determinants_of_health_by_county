@@ -1,0 +1,28 @@
+digraph G {
+n2[label="all", color="red"];
+n6[label="data/processed/cleaned_data.csv", color="red"];
+n7[label="data/raw/US_counties_COVID19_health_weather_data.csv", color="red"];
+n4[label="doc/covid_socioeconomic_report.Rmd", color="green"];
+n3[label="doc/covid_socioeconomic_report.html", color="red"];
+n10[label="results/cases_per_100k.png", color="red"];
+n11[label="results/feature_coefs.png", color="red"];
+n5[label="results/highest_covid_cases.rds", color="red"];
+n8[label="results/lowest_covid_cases.rds", color="red"];
+n12[label="results/mlr_model.rds", color="red"];
+n9[label="results/numeric_feats_dist.png", color="red"];
+n3 -> n2 ; 
+n7 -> n6 ; 
+n4 -> n3 ; 
+n10 -> n3 ; 
+n11 -> n3 ; 
+n5 -> n3 ; 
+n8 -> n3 ; 
+n12 -> n3 ; 
+n9 -> n3 ; 
+n6 -> n10 ; 
+n6 -> n11 ; 
+n6 -> n5 ; 
+n6 -> n8 ; 
+n6 -> n12 ; 
+n6 -> n9 ; 
+}

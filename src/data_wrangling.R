@@ -28,11 +28,14 @@ main <- function(inpath, output){
     stop("No output directory found")
   }
   
+  print("Reading data...")
   raw_data <- read_csv(inpath)
   
   if (typeof(raw_data) != typeof(data.frame())){
     stop("Data type is not a dataframe")
   }
+  
+  print("Data wrangling...")
   filtered_data <- filter_data(raw_data)
   write_csv(filtered_data, outpath)
 }
@@ -58,17 +61,17 @@ filter_data <- function(raw_data){
     "percent_unemployed_CHR", "violent_crime_rate", 
     "chlamydia_rate", "teen_birth_rate"
   )
-  filtered_data <- raw_data |>
-    select(all_of(col_list)) |>
-    drop_na() |> 
-    group_by(county) |>
-    mutate(cases_growth_rate= c(0, diff(cases)) / cases)|>
+  filtered_data <- raw_data %>%
+    select(all_of(col_list)) %>%
+    drop_na() %>%
+    group_by(county) %>%
+    mutate(cases_growth_rate= c(0, diff(cases)) / cases) %>%
     summarize(
       state = first(state),
       max_cases = max(cases),
       avg_growth_rate = mean(cases_growth_rate, na.rm = TRUE),
       max_growth_rate = max(cases_growth_rate, na.rm = TRUE),
-      across(total_population:teen_birth_rate, mean)) |>
+      across(total_population:teen_birth_rate, mean)) %>%
     mutate(
       total_cases = max_cases*10**5/total_population,
       deaths_per_100k = num_deaths*10**5/total_population,

@@ -25,11 +25,6 @@ library(here)
 
 ```{r load model results}
 mlr_model <- readRDS(here("results", "mlr_model.rds"))
-desc_stats <- readRDS(here("results", "desc_stats.rds"))
-head_data <- readRDS(here("results", "head_data.rds"))
-summary_data <- readRDS(here("results", "summary_data.rds"))
-tail_data <- readRDS(here("results", "tail_data.rds"))
-unique_vals <- readRDS(here("results", "unique_vals.rds"))
 highest_covid_cases <- readRDS(here("results", "highest_covid_cases.rds"))
 lowest_covid_cases <- readRDS(here("results", "lowest_covid_cases.rds"))
 ```
@@ -40,7 +35,7 @@ Here, we attempt to build a multiple linear regression model which is used to qu
 
 # Introduction
 
-COVID-19 is a serious pandemic that has introduced a wide variety of challenges since 2019. By analysing the association of certain socioeconomic factors with COVID-19 prevalence, we hope to shed some light onto the societal features that may be associated with a high number of COVID-19 cases. Identifying the socioeconomic factors could also help policymakers and leaders make more informed decisions in combatting COVID-19.
+COVID-19 is a serious pandemic that has introduced a wide variety of challenges since 2019. By analysing the association of certain socioeconomic factors with COVID-19 prevalence, we hope to shed some light onto the societal features that may be associated with a high number of COVID-19 cases. Identifying the socioeconomic factors could also help policymakers and leaders make more informed decisions in combating COVID-19.
 
 # Methods
 
@@ -56,6 +51,8 @@ The processed data contains 1621 observations and 18 features where each row cor
 
 A multiple linear regression model with interaction terms was used to quantify the association of the socioeocnomic features with COVID-19 prevalence. The R programming language [@R] and the following R packages were used to perform the analysis: broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], and here [@here]. The code used to perform the analysis and create this report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county).
 
+In terms of feature transformation, there were no missing values in the data set and thus, imputation was not required. Furthermore, for all the numeric variables, scaling was performed such that the feature has a mean of zero, and a standard deviation of 1. Interaction terms were included in the model to account for non-linear relationships between COVID-19 prevalence and the features.
+
 # Results
 
 ## Exploratory Data Analysis (EDA)
@@ -66,11 +63,11 @@ Exploratory data analysis was first carried out to determine the distributions o
 
 ```{r table of covid prevalence for each county, message=FALSE}
 kable(highest_covid_cases,
-      caption = "Table 5. Top 5 counties with highest number of cumulative COVID-19 cases.",
+      caption = "Table 5. Top 6 counties with highest number of cumulative COVID-19 cases.",
       digits = 3)
 
 kable(lowest_covid_cases,
-      caption = "Table 6. Top 5 counties with lowest number of cumulative COVID-19 cases",
+      caption = "Table 6. Top 6 counties with lowest number of cumulative COVID-19 cases",
       digits = 3)
 ```
 
@@ -78,7 +75,7 @@ kable(lowest_covid_cases,
 
 Density plots for all numeric variables are also created to check their distributions. The is a positive skew for many of the variables.
 
-```{r density plots for numeric variables, warning=FALSE, fig.cap="Figure 1. Density plots of numeric feature", out.width="100%"}
+```{r density plots for numeric variables, warning=FALSE, fig.cap="Figure 1. Density plots of numeric features", out.width="100%"}
 knitr::include_graphics("../results/numeric_feats_dist.png")
 ```
 
@@ -86,7 +83,7 @@ knitr::include_graphics("../results/numeric_feats_dist.png")
 
 Plots to demonstrate the relationship between COVID-19 cases per 100,000 and socioeconomic features are created for each county. The linear relationships are not strong individually, however, this could be because each feature is observed in isolation. There might be interactions between these features which can have a linear relationship with COVID-19 prevalence.
 
-```{r cases per 100k vs other features, warning=FALSE, fig.cap="Figure 2. Plots of total COVID-19 cases per 100k v.s. other features", out.width="100%"}
+```{r cases per 100k vs other features, warning=FALSE, fig.cap="Figure 2. Plots of COVID-19 cases per 100,000 against features", out.width="100%"}
 knitr::include_graphics("../results/cases_per_100k.png")
 ```
 
@@ -95,20 +92,21 @@ knitr::include_graphics("../results/cases_per_100k.png")
 The coefficients for a random sample of 10 features are selected, along with the p-values and whether they are significant at the 0.05 significance level.
 
 ```{r model coefs table, warning=FALSE}
-kable(mlr_model, caption = "Table 9. Coefficients of each feature of the multiple linear regression model.")
+kable(mlr_model, caption = "Table 9. Coefficients of some features of the multiple linear regression model.")
 ```
 
 ### Coefficients of significant feature of the multiple linear regression model with 95% confidence intervals
 
 The coefficients along with their 95% confidence intervals are plotted as error bars for features that were significant at the 0.05 significance level.
 
-```{r model coefs figure, warning=FALSE, fig.cap="Figure 4. Coefficients of each feature of the multiple linear regression model with 95% confidence intervals.", out.width="100%"}
+```{r model coefs figure, warning=FALSE, fig.cap="Figure 4. Coefficients of significant features of MLR with 95% confidence intervals.", out.width="100%"}
 knitr::include_graphics("../results/feature_coefs.png")
 ```
 
 # Discussion
-PLEASE EDIT
 
-The multiple linear regression result reveals that only three features and the intercept term are statistically significant on 5% significant level. After normalizing all features, the value of the intercept term is larger than the sum of the absolute coefficient of all other significant features. This means our current model has low explanatory power on the responsive variable COVID-19 cases, which enables the intercept term to capture most of the changes. To further improve this model in future with hopes of finding the essential influence factors of COVID-19 prevalence, we need to improve our feature selecting process by using methods like PCA model and incorporating advanced feature engineering techniques.
+The multiple linear regression result reveals that 7 features and the intercept term are statistically significant at the 5% significance level. Some of the significant features such as the percentage of smokers make sense, however, there are also some features that are unexpected, such as the teen birth rate. Interestingly, features also seem to interact with one another to become significant, such as the interaction between violent crime rate and chlamydia rate. One possible explanation for significance is that these features hint at larger socioeconomic problems that are difficult to measure and quantify.
+
+To further improve our model in the future, techniques such as PCA, feature engineering, and feature selection can be implemented to select features in a more robust method. Other non-linear models such as a random forest can also be used and compared to see if the feature importances are similar or not.
 
 # References

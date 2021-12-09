@@ -33,9 +33,11 @@ main <- function(opt) {
     "percent_unemployed_CHR", "violent_crime_rate", "chlamydia_rate",
     "teen_birth_rate")
 
+  print("Standardising features...")
   # Standardize features data
   standardised_data <- standardise_features(df, model_features)
 
+  print("Building MLR model...")
   # Build model
   mlr <- lm(cases_per_100k ~ . * .,
             data = standardised_data |>
