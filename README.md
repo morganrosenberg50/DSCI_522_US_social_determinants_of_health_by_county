@@ -33,11 +33,11 @@ To replicate the analysis, install
 repository and run the following command at the command line/terminal
 from the root directory of this project:
 
-    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health <IMAGE NAME>:<TAG> make -C /home/rstudio/determinants_of_health all
+    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county:v1.3.0 make -C /home/rstudio/determinants_of_health all
     
 To reset the project to a clean state with no intermediate files, run the following command at the command line/terminal from the root directory of this project:
 
-    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health <IMAGE NAME>:<TAG> make -C /home/rstudio/determinants_of_health clean
+    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county:v1.3.0 make -C /home/rstudio/determinants_of_health clean
     
 It may also be necessary to allocate more memory to the Docker container. To do this, open the Docker application, enter Settings, click on the Resources tab, and increase the Memory allocated using the slider.
     
