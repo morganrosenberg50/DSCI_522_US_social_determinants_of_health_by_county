@@ -35,7 +35,7 @@ jobs:
     - name: Publish to Registry
       uses: elgohr/Publish-Docker-Github-Action@master
       with:
-        name: alexYinanGu0/DSCI_522_US_social_determinants_of_health_by_county # change this to your DockerHub username and repository
+        name: alexYinanGu0/us_social_determinants_of_health_by_county # change this to your DockerHub username and repository
         username: ${{ secrets.DOCKER_USERNAME }} # you need to add your Docker username to this GitHub repo as a secret
         password: ${{ secrets.DOCKER_PASSWORD }} # you need to add your Docker password to this GitHub repo as a secret
         tags: "latest,${{ steps.bump.outputs.new_tag }}"
