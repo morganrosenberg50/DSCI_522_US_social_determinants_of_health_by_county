@@ -1,5 +1,6 @@
 # Docker file for the U.S. Social Determinants of Health by County Project
 # Alex Yinan Guo, Dec, 2021
+# Master of Data Science, UBC
 
 # use rocker/tidyverse as the base image
 FROM rocker/tidyverse
