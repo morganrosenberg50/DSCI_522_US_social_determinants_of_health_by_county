@@ -11,3 +11,5 @@ RUN apt-get install libxt6
 
 # install R packages
 RUN Rscript -e "install.packages(c('docopt', 'httr', 'jsonlite', 'broom', 'plotly', 'here', 'knitr', 'testthat'), repos = 'http://cran.us.r-project.org')"
+
+RUN apt-get install pandoc -y
