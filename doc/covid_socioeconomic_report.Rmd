@@ -31,7 +31,7 @@ lowest_covid_cases <- readRDS(here("results", "lowest_covid_cases.rds"))
 
 # Summary
 
-Here, we attempt to build a multiple linear regression model which is used to quantify the influence of socioeconomic factors on the COVID-19 prevalence (measured by cases per 100,000 population) among all US counties. Factors such as percentage of smokers, income ratio, population density, percent unemployed, etc. are explored. Our final regression model suggests that the percentage of smokers, teenage birth rates, and chlamydia rates are the three features more strongly associated with COVID-19 prevalence. However, the original data set contained over 200 features and a subset of these features were chosen arbitrarily which means that there is still room to explore other socioeconomic features that are significantly associated with COVID-19 prevalence.
+Here, we attempt to build a multiple linear regression model which is used to quantify the influence of socioeconomic factors on the COVID-19 prevalence (measured by cases per 100,000 population) among all US counties. Factors such as percentage of smokers, income ratio, population density, percent unemployed, etc. are explored. Our final regression model suggests that the percentage of smokers, teenage birth rates, unemployment rate, and a few interaction terms are significantly associated with COVID-19 prevalence at the 0.05 level. However, the original data set contained over 200 features and a subset of these features were chosen arbitrarily which means that there is still room to explore other socioeconomic features that are significantly associated with COVID-19 prevalence.
 
 # Introduction
 
@@ -45,13 +45,13 @@ The original data set used in this project is of US social determinants of healt
 
 The data set reports time series data per county for the cumulative COVID-19 cases and different socioeconomic features. However, due to limits in measurements and reporting, COVID-19 cases and socioeconomic features were updated at irregular intervals (e.g. COVID-19 cases were reported daily, whereas the socioeconomic features were reported no more than once a month). Thus, we created summary statistics for the socioeconomic features per county such as the mean percentage of smokers.
 
-The processed data contains 1621 observations and 18 features where each row corresponds to the cumulative COVID-19 cases, and aggregated socioeconomic features for each county.
+The processed data contains 1621 observations and 18 features where each row corresponds to the cumulative COVID-19 cases, and aggregated socioeconomic features for each county. All missing values were removed during data wrangling.
 
 ## Analysis
 
-A multiple linear regression model with interaction terms was used to quantify the association of the socioeocnomic features with COVID-19 prevalence. The R programming language [@R] and the following R packages were used to perform the analysis: broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], and here [@here]. The code used to perform the analysis and create this report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county).
+A multiple linear regression model with interaction terms was used to quantify the association of the socioeconomic features with COVID-19 prevalence. The R programming language [@R] and the following R packages were used to perform the analysis: broom [@broom], docopt [@docopt], knitr [@knitr], tidyverse [@tidyverse], testhat[@testhat], and here [@here]. The code used to perform the analysis and create this report can be found [here](https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county).
 
-In terms of feature transformation, there were no missing values in the data set and thus, imputation was not required. Furthermore, for all the numeric variables, scaling was performed such that the feature has a mean of zero, and a standard deviation of 1. Interaction terms were included in the model to account for non-linear relationships between COVID-19 prevalence and the features.
+In terms of feature transformation, there were no missing values in the processed data set and thus, imputation was not required. Furthermore, for all the numeric variables, scaling was performed such that the feature has a mean of zero, and a standard deviation of 1. Interaction terms were included in the model to account for non-linear relationships between COVID-19 prevalence and the features.
 
 # Results
 
@@ -89,7 +89,7 @@ knitr::include_graphics("../results/cases_per_100k.png")
 
 ## Multiple linear regression model
 
-The coefficients for a random sample of 10 features are selected, along with the p-values and whether they are significant at the 0.05 significance level.
+There are 45 features including all the interaction terms. A subset of 10 features are selected randomly and their corresponding coefficient estimates, p-values and whether they are significant at the 0.05 level are shown.
 
 ```{r model coefs table, warning=FALSE}
 kable(mlr_model, caption = "Table 9. Coefficients of some features of the multiple linear regression model.")
@@ -97,7 +97,7 @@ kable(mlr_model, caption = "Table 9. Coefficients of some features of the multip
 
 ### Coefficients of significant feature of the multiple linear regression model with 95% confidence intervals
 
-The coefficients along with their 95% confidence intervals are plotted as error bars for features that were significant at the 0.05 significance level.
+The coefficients along with their 95% confidence intervals are plotted as error bars for features that were significant at the 0.05 level.
 
 ```{r model coefs figure, warning=FALSE, fig.cap="Figure 4. Coefficients of significant features of MLR with 95% confidence intervals.", out.width="100%"}
 knitr::include_graphics("../results/feature_coefs.png")
