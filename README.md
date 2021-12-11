@@ -29,18 +29,18 @@ There are two suggested ways to run this analysis:
 a unix shell (e.g., terminal or Git Bash)*
 
 To replicate the analysis, install
-[Docker](https://www.docker.com/get-started). It may also be necessary to allocate more memory to the Docker container. To do this, open the Docker application, enter Settings, click on the Resources tab, and increase the Memory allocated using the slider.
+[Docker](https://www.docker.com/get-started). It may also be necessary to allocate more memory to the Docker container. To do this, open the Docker application, enter Settings, click on the Resources tab, and increase the Memory allocated using the slider. Please also refer to [Docker Desktop for Windows user manual](https://docs.docker.com/desktop/windows/) and [Docker Desktop for Mac user manual](https://docs.docker.com/desktop/mac/) for more information. 
 
-To pull the Docker image from Docker Hub, run the following command:
+To pull the [Docker image](https://hub.docker.com/repository/docker/alexyinanguo/us_social_determinants_of_health_by_county) from Docker Hub, run the following command:
 
     docker pull alexyinanguo/us_social_determinants_of_health_by_county
 
 Clone this GitHub repository and run the following command at the command line/terminal
-from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`):
+from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`; Windows users should use `//` in the path):
 
     docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county make -C /home/rstudio/determinants_of_health all
     
-To reset the project to a clean state with no intermediate files, run the following command at the command line/terminal from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`):
+To reset the project to a clean state with no intermediate files, run the following command at the command line/terminal from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`; Windows users should use `//` in the path):
 
     docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county make -C /home/rstudio/determinants_of_health clean
     
