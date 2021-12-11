@@ -2,18 +2,18 @@
 # date: 2021-11-18
 
 "This script downloads a dataset from a URL or a local file path.
-Usage: get_data.R (--url=<url> --file=<file>) --out_file=<out_file>
+Usage: get_data.R (--url=<url> --file=<file>) --out_dir=<out_dir>
 
 Options:
 --url=<url>             URL from where to download data
 --file=<file>           Filaname of Kaggle dataset to download (file must be
                         specified when using URL)
---out_file=<out_file>   Path including filename of where to
+--out_dir=<out_dir>     Directory (without filename) of where to
                         locally write the file
 " -> doc
 
 # --url=https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data
-# --file=us_county_sociohealth_data.csv
+# --out_dir=data/raw
 
 library(httr)
 library(jsonlite)
@@ -45,17 +45,16 @@ main <- function(opt) {
 
   print("Downloading data from URL...")
   if (grepl("zip", content_type)) {
-    temp <- tempfile()
+    temp <- tempfile(fileext = ".zip")
     download.file(rcall$url, temp)
-    df <- read.csv(unz(temp, opt$file))
-    unlink(temp)
   }
   else {
     stop("URL does not lead to a valid data set.")
   }
   
   print("Saving data into csv file...")
-  write.csv(df, opt$out_file, row.names = FALSE)
+  zip::unzip(temp, file = opt$file, exdir = opt$out_dir, junkpaths = TRUE)
+  unlink(temp)
 }
 
 get_url <- function(url, .kaggle_base_url, filename) {
