@@ -36,11 +36,11 @@ To pull the [Docker image](https://hub.docker.com/repository/docker/alexyinanguo
     docker pull alexyinanguo/us_social_determinants_of_health_by_county
 
 Clone this GitHub repository and run the following command at the command line/terminal
-from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`):
+from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`; Windows users should use `//` in the path):
 
     docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county make -C /home/rstudio/determinants_of_health all
     
-To reset the project to a clean state with no intermediate files, run the following command at the command line/terminal from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`):
+To reset the project to a clean state with no intermediate files, run the following command at the command line/terminal from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`; Windows users should use `//` in the path):
 
     docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county make -C /home/rstudio/determinants_of_health clean
     
