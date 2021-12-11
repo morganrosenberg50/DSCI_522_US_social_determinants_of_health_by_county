@@ -19,9 +19,9 @@ The final report can be read as a markdown file [here](https://github.com/UBC-MD
 
 ## Usage
 
-To replicate the analysis, please have a `kaggle.json` file containing your Kaggle credentials. To obtain your Kaggle credentials, follow the instructions on [Kaggle](https://www.kaggle.com/docs/api). 
+To replicate the analysis, please have a `kaggle.json` file containing your Kaggle credentials at the project root. To obtain your Kaggle credentials, follow the instructions on [Kaggle](https://www.kaggle.com/docs/api). 
 
-There are two suggetsed ways to run this analysis:
+There are two suggested ways to run this analysis:
 
 #### 1\. Using Docker
 
@@ -29,17 +29,20 @@ There are two suggetsed ways to run this analysis:
 a unix shell (e.g., terminal or Git Bash)*
 
 To replicate the analysis, install
-[Docker](https://www.docker.com/get-started). Then clone this GitHub
-repository and run the following command at the command line/terminal
-from the root directory of this project:
+[Docker](https://www.docker.com/get-started). It may also be necessary to allocate more memory to the Docker container. To do this, open the Docker application, enter Settings, click on the Resources tab, and increase the Memory allocated using the slider.
 
-    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county:v1.3.0 make -C /home/rstudio/determinants_of_health all
-    
-To reset the project to a clean state with no intermediate files, run the following command at the command line/terminal from the root directory of this project:
+To pull the Docker image from Docker Hub, run the following command:
 
-    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county:v1.3.0 make -C /home/rstudio/determinants_of_health clean
+    docker pull alexyinanguo/us_social_determinants_of_health_by_county
+
+Clone this GitHub repository and run the following command at the command line/terminal
+from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`):
+
+    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county make -C /home/rstudio/determinants_of_health all
     
-It may also be necessary to allocate more memory to the Docker container. To do this, open the Docker application, enter Settings, click on the Resources tab, and increase the Memory allocated using the slider.
+To reset the project to a clean state with no intermediate files, run the following command at the command line/terminal from the root directory of this project (Mac M1 users should add the flag and value `--platform linux/amd64`):
+
+    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county make -C /home/rstudio/determinants_of_health clean
     
 #### 2\. Without using Docker
 

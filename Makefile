@@ -10,7 +10,7 @@ all : doc/covid_socioeconomic_report.html
 
 # Download data file
 data/raw/US_counties_COVID19_health_weather_data.csv :
-		Rscript src/get_kaggle_data.R --url=https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data --file=US_counties_COVID19_health_weather_data.csv --out_file=data/raw/US_counties_COVID19_health_weather_data.csv
+		Rscript src/get_kaggle_data.R --url=https://www.kaggle.com/johnjdavisiv/us-counties-covid19-weather-sociohealth-data --file=US_counties_COVID19_health_weather_data.csv --out_dir=data/raw
 
 # Perform data wrangling
 data/processed/cleaned_data.csv : data/raw/US_counties_COVID19_health_weather_data.csv
