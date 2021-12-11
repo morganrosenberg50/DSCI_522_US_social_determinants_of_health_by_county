@@ -217,7 +217,7 @@ pre code {
 </div>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>COVID-19 is a serious pandemic that has introduced a wide variety of challenges since 2019. By analysing the association of certain socioeconomic factors with COVID-19 prevalence, we hope to shed some light onto the societal features that may be associated with a high number of COVID-19 cases. Identifying the socioeconomic factors could also help policymakers and leaders make more informed decisions in combating COVID-19.</p>
+<p>COVID-19 is a serious pandemic that has introduced a wide variety of challenges since 2019. Increasing COVID-19 caseloads were associated with countries with higher obesity, median population age <span class="citation">(Chaudhry et al. 2020)</span>. By analysing the association of certain socioeconomic factors with COVID-19 prevalence, we hope to shed some light onto the societal features that may be associated with a high number of COVID-19 cases. Identifying the socioeconomic factors could also help policymakers and leaders make more informed decisions in combating COVID-19.</p>
 </div>
 <div id="methods" class="section level1">
 <h1>Methods</h1>
@@ -225,12 +225,103 @@ pre code {
 <h2>Data</h2>
 <p>The original data set used in this project is of US social determinants of health by county created by Dr. John Davis at Indiana University, the United States. Each row in the original data set represents a day for a county with the cumulative number of COVID-19 cases, and other socioeconomic features of the county. There are over 790,000 rows and over 200 features in the data set. We identified a subset of these features which we were interested in and also added a few “wildcard” features such as the teen birth rate and chlamydia rate which might be related to broader social determinants of public health. In the future, additional features could be chosen as they become of interest to the team, or are requested by the community.</p>
 <p>The data set reports time series data per county for the cumulative COVID-19 cases and different socioeconomic features. However, due to limits in measurements and reporting, COVID-19 cases and socioeconomic features were updated at irregular intervals (e.g. COVID-19 cases were reported daily, whereas the socioeconomic features were reported no more than once a month). Thus, we created summary statistics for the socioeconomic features per county such as the mean percentage of smokers.</p>
-<p>The processed data contains 1621 observations and 18 features where each row corresponds to the cumulative COVID-19 cases, and aggregated socioeconomic features for each county.</p>
+<p>The processed data contains 1621 observations and 18 features where each row corresponds to the cumulative COVID-19 cases, and aggregated socioeconomic features for each county. All missing values were removed during data wrangling.</p>
+<table>
+<caption>Features table</caption>
+<colgroup>
+<col width="33%" />
+<col width="66%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Features</th>
+<th>Explanation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>county</td>
+<td>name of county</td>
+</tr>
+<tr class="even">
+<td>state</td>
+<td>name of state</td>
+</tr>
+<tr class="odd">
+<td>max_cases</td>
+<td>maximum number of Covid-19 case</td>
+</tr>
+<tr class="even">
+<td>avg_growth_rate</td>
+<td>average Covid-19 case growth rate per day</td>
+</tr>
+<tr class="odd">
+<td>max_growth_rate</td>
+<td>maximum Covid-19 case growth rate per day</td>
+</tr>
+<tr class="even">
+<td>total_population</td>
+<td>total population</td>
+</tr>
+<tr class="odd">
+<td>num_deaths</td>
+<td>total number of deaths</td>
+</tr>
+<tr class="even">
+<td>percent_smokers</td>
+<td>smokers percentage among total population</td>
+</tr>
+<tr class="odd">
+<td>percent_vaccinated</td>
+<td>vaccinated percentage among total population</td>
+</tr>
+<tr class="even">
+<td>income_ratio</td>
+<td>income index</td>
+</tr>
+<tr class="odd">
+<td>population_density_per_sqmi</td>
+<td>population density measured by per square meter</td>
+</tr>
+<tr class="even">
+<td>percent_fair_or_poor_health</td>
+<td>percentage of fair or poor health among total population</td>
+</tr>
+<tr class="odd">
+<td>percent_unemployed_CHR</td>
+<td>unemployment rate measured by CHR</td>
+</tr>
+<tr class="even">
+<td>violent_crime_rate</td>
+<td>violent crime rate</td>
+</tr>
+<tr class="odd">
+<td>chlamydia_rate</td>
+<td>chlamydia rate</td>
+</tr>
+<tr class="even">
+<td>teen_birth_rate</td>
+<td>teenager birth rate</td>
+</tr>
+<tr class="odd">
+<td>total_cases</td>
+<td>accumulated number of Covid-19 case</td>
+</tr>
+<tr class="even">
+<td>deaths_per_100k</td>
+<td>number of Covid-19 deaths per 100k population</td>
+</tr>
+<tr class="odd">
+<td>cases_per_100k</td>
+<td>number of Covid-19 cases per 100k population</td>
+</tr>
+</tbody>
+</table>
 </div>
 <div id="analysis" class="section level2">
 <h2>Analysis</h2>
 <p>A multiple linear regression model with interaction terms was used to quantify the association of the socioeconomic features with COVID-19 prevalence. The R programming language <span class="citation">(R Core Team 2019)</span> and the following R packages were used to perform the analysis: broom <span class="citation">(Robinson, Hayes, and Couch 2021)</span>, docopt <span class="citation">(de Jonge 2018)</span>, knitr <span class="citation">(Xie 2014)</span>, tidyverse <span class="citation">(Wickham 2017)</span>, testhat<span class="citation">(Wickham 2011)</span>, and here <span class="citation">(Müller 2020)</span>. The code used to perform the analysis and create this report can be found <a href="https://github.com/UBC-MDS/DSCI_522_US_social_determinants_of_health_by_county">here</a>.</p>
-<p>In terms of feature transformation, there were no missing values in the data set and thus, imputation was not required. Furthermore, for all the numeric variables, scaling was performed such that the feature has a mean of zero, and a standard deviation of 1. Interaction terms were included in the model to account for non-linear relationships between COVID-19 prevalence and the features.</p>
+<p>In terms of feature transformation, there were no missing values in the processed data set and thus, imputation was not required. Furthermore, for all the numeric variables, scaling was performed such that the feature has a mean of zero, and a standard deviation of 1. Interaction terms were included in the model to account for non-linear relationships between COVID-19 prevalence and the features.</p>
 </div>
 </div>
 <div id="results" class="section level1">
@@ -369,6 +460,7 @@ pre code {
 Figure 1. Density plots of numeric features
 </p>
 </div>
+<p>Most of the distribution of features are right-skewed. The percent_smokers has two peaks in the density plot and population_density_per_sqmi has a small cluster around 1000, and evenly distributed along all possible values.</p>
 </div>
 <div id="relationships-between-cumulative-covid-19-cases-per-100000-of-each-county-and-socioeconomic-features" class="section level3">
 <h3>Relationships between cumulative COVID-19 cases per 100,000 of each county and socioeconomic features</h3>
@@ -501,12 +593,15 @@ Figure 4. Coefficients of significant features of MLR with 95% confidence interv
 </div>
 <div id="discussion" class="section level1">
 <h1>Discussion</h1>
-<p>The multiple linear regression result reveals that 7 features and the intercept term are statistically significant at the 5% significance level. Some of the significant features such as the percentage of smokers make sense, however, there are also some features that are unexpected, such as the teen birth rate. Interestingly, features also seem to interact with one another to become significant, such as the interaction between violent crime rate and chlamydia rate. One possible explanation for significance is that these features hint at larger socioeconomic problems that are difficult to measure and quantify.</p>
+<p>The multiple linear regression results reveal that 7 features and the intercept term are statistically significant at the 5% significance level. Some of the significant features such as the percentage of smokers have a positive association with cases, which is reasonable since it’s common sense that smoking is a disadvantage factor associated with lung health; however, there are also some features that are unexpected, such as the teen birth rate. Moreover, it’s surprisingly seen a strong negative association between percent_unemployed_CHR and Covid-19 cases. Interestingly, features also seem to interact with one another to become significant, such as the interaction between violent crime rate and chlamydia rate. One possible explanation for significance is that these features hint at larger socioeconomic problems that are difficult to measure and quantify.</p>
 <p>To further improve our model in the future, techniques such as PCA, feature engineering, and feature selection can be implemented to select features in a more robust method. Other non-linear models such as a random forest can also be used and compared to see if the feature importances are similar or not.</p>
 </div>
 <div id="references" class="section level1 unnumbered">
 <h1 class="unnumbered">References</h1>
 <div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-chaudhry2020country" class="csl-entry">
+Chaudhry, Rabail, George Dranitsaris, Talha Mubashir, Justyna Bartoszko, and Sheila Riazi. 2020. <span>“A Country Level Analysis Measuring the Impact of Government Actions, Country Preparedness and Socioeconomic Factors on COVID-19 Mortality and Related Health Outcomes.”</span> <em>EClinicalMedicine</em> 25: 100464.
+</div>
 <div id="ref-docopt" class="csl-entry">
 de Jonge, Edwin. 2018. <em>Docopt: Command-Line Interface Specification Language</em>. <a href="https://CRAN.R-project.org/package=docopt">https://CRAN.R-project.org/package=docopt</a>.
 </div>

@@ -35,7 +35,7 @@ Here, we attempt to build a multiple linear regression model which is used to qu
 
 # Introduction
 
-COVID-19 is a serious pandemic that has introduced a wide variety of challenges since 2019. By analysing the association of certain socioeconomic factors with COVID-19 prevalence, we hope to shed some light onto the societal features that may be associated with a high number of COVID-19 cases. Identifying the socioeconomic factors could also help policymakers and leaders make more informed decisions in combating COVID-19.
+COVID-19 is a serious pandemic that has introduced a wide variety of challenges since 2019. Increasing COVID-19 caseloads were associated with countries with higher obesity, median population age [@chaudhry2020country]. By analysing the association of certain socioeconomic factors with COVID-19 prevalence, we hope to shed some light onto the societal features that may be associated with a high number of COVID-19 cases. Identifying the socioeconomic factors could also help policymakers and leaders make more informed decisions in combating COVID-19.
 
 # Methods
 
@@ -46,6 +46,30 @@ The original data set used in this project is of US social determinants of healt
 The data set reports time series data per county for the cumulative COVID-19 cases and different socioeconomic features. However, due to limits in measurements and reporting, COVID-19 cases and socioeconomic features were updated at irregular intervals (e.g. COVID-19 cases were reported daily, whereas the socioeconomic features were reported no more than once a month). Thus, we created summary statistics for the socioeconomic features per county such as the mean percentage of smokers.
 
 The processed data contains 1621 observations and 18 features where each row corresponds to the cumulative COVID-19 cases, and aggregated socioeconomic features for each county. All missing values were removed during data wrangling.
+
+| Features                    | Explanation                                              |
+|-----------------------------|----------------------------------------------------------|
+| county                      | name of county                                           |
+| state                       | name of state                                            |
+| max_cases                   | maximum number of Covid-19 case                          |
+| avg_growth_rate             | average Covid-19 case growth rate per day                |
+| max_growth_rate             | maximum Covid-19 case growth rate per day                |
+| total_population            | total population                                         |
+| num_deaths                  | total number of deaths                                   |
+| percent_smokers             | smokers percentage among total population                |
+| percent_vaccinated          | vaccinated percentage among total population             |
+| income_ratio                | income index                                             |
+| population_density_per_sqmi | population density measured by per square meter          |
+| percent_fair_or_poor_health | percentage of fair or poor health among total population |
+| percent_unemployed_CHR      | unemployment rate measured by CHR                        |
+| violent_crime_rate          | violent crime rate                                       |
+| chlamydia_rate              | chlamydia rate                                           |
+| teen_birth_rate             | teenager birth rate                                      |
+| total_cases                 | accumulated number of Covid-19 case                      |
+| deaths_per_100k             | number of Covid-19 deaths per 100k population            |
+| cases_per_100k              | number of Covid-19 cases per 100k population             |
+
+: Features table
 
 ## Analysis
 
@@ -79,6 +103,8 @@ Density plots for all numeric variables are also created to check their distribu
 knitr::include_graphics("../results/numeric_feats_dist.png")
 ```
 
+Most of the distribution of features are right-skewed. The percent_smokers has two peaks in the density plot and population_density_per_sqmi has a small cluster around 1000, and evenly distributed along all possible values.
+
 ### Relationships between cumulative COVID-19 cases per 100,000 of each county and socioeconomic features
 
 Plots to demonstrate the relationship between COVID-19 cases per 100,000 and socioeconomic features are created for each county. The linear relationships are not strong individually, however, this could be because each feature is observed in isolation. There might be interactions between these features which can have a linear relationship with COVID-19 prevalence.
@@ -105,7 +131,7 @@ knitr::include_graphics("../results/feature_coefs.png")
 
 # Discussion
 
-The multiple linear regression result reveals that 7 features and the intercept term are statistically significant at the 5% significance level. Some of the significant features such as the percentage of smokers make sense, however, there are also some features that are unexpected, such as the teen birth rate. Interestingly, features also seem to interact with one another to become significant, such as the interaction between violent crime rate and chlamydia rate. One possible explanation for significance is that these features hint at larger socioeconomic problems that are difficult to measure and quantify.
+The multiple linear regression results reveal that 7 features and the intercept term are statistically significant at the 5% significance level. Some of the significant features such as the percentage of smokers have a positive association with cases, which is reasonable since it's common sense that smoking is a disadvantage factor associated with lung health; however, there are also some features that are unexpected, such as the teen birth rate. Moreover, it's surprisingly seen a strong negative association between percent_unemployed_CHR and Covid-19 cases. Interestingly, features also seem to interact with one another to become significant, such as the interaction between violent crime rate and chlamydia rate. One possible explanation for significance is that these features hint at larger socioeconomic problems that are difficult to measure and quantify.
 
 To further improve our model in the future, techniques such as PCA, feature engineering, and feature selection can be implemented to select features in a more robust method. Other non-linear models such as a random forest can also be used and compared to see if the feature importances are similar or not.
 
