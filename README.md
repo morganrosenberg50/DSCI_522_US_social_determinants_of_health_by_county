@@ -29,17 +29,20 @@ There are two suggetsed ways to run this analysis:
 a unix shell (e.g., terminal or Git Bash)*
 
 To replicate the analysis, install
-[Docker](https://www.docker.com/get-started). Then clone this GitHub
-repository and run the following command at the command line/terminal
+[Docker](https://www.docker.com/get-started). It may also be necessary to allocate more memory to the Docker container. To do this, open the Docker application, enter Settings, click on the Resources tab, and increase the Memory allocated using the slider.
+
+To pull the Docker image from Docker Hub, run the following command:
+
+    docker pull alexyinanguo/us_social_determinants_of_health_by_county
+
+Clone this GitHub repository and run the following command at the command line/terminal
 from the root directory of this project:
 
-    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county:v1.3.0 make -C /home/rstudio/determinants_of_health all
+    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county make -C /home/rstudio/determinants_of_health all
     
 To reset the project to a clean state with no intermediate files, run the following command at the command line/terminal from the root directory of this project:
 
-    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county:v1.3.0 make -C /home/rstudio/determinants_of_health clean
-    
-It may also be necessary to allocate more memory to the Docker container. To do this, open the Docker application, enter Settings, click on the Resources tab, and increase the Memory allocated using the slider.
+    docker run --rm -v /$(pwd):/home/rstudio/determinants_of_health alexyinanguo/us_social_determinants_of_health_by_county make -C /home/rstudio/determinants_of_health clean
     
 #### 2\. Without using Docker
 
