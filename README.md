@@ -19,9 +19,9 @@ The final report can be read as a markdown file [here](https://github.com/UBC-MD
 
 ## Usage
 
-To replicate the analysis, please have a `kaggle.json` file containing your Kaggle credentials. To obtain your Kaggle credentials, follow the instructions on [Kaggle](https://www.kaggle.com/docs/api). 
+To replicate the analysis, please have a `kaggle.json` file containing your Kaggle credentials at the project root. To obtain your Kaggle credentials, follow the instructions on [Kaggle](https://www.kaggle.com/docs/api). 
 
-There are two suggetsed ways to run this analysis:
+There are two suggested ways to run this analysis:
 
 #### 1\. Using Docker
 
